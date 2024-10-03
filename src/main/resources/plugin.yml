@@ -1,0 +1,52 @@
+name: Lodacore
+version: '1.1'
+main: fr.vanibels.lodacore.Lodacore
+api-version: '1.20'
+author: Vanibels
+description: Un plugin pour le serveur Lodaria.
+commands:
+  list:
+    description: Gérer les factions.
+    aliases:
+      - l
+      - ls
+    usage: /<command>
+
+  maintenance:
+    description: Gérer le mode maintenance.
+    permission: lodaria.maintenance
+    aliases:
+      - maint
+    usage: /<command>
+  core:
+    description: Commande du core
+    permission: lodaria.admin
+  vanish:
+    description: Rendre le joueur invisible aux autres
+    usage: /vanish
+  staff:
+    description: Ouvrir le GUI de gestion des joueurs
+    usage: /staff
+permissions:
+  lodaria.admin:
+    description: Permet d'accéder aux commandes administratives.
+    default: op
+
+  lodaria.user:
+    description: Permissions de base pour les utilisateurs.
+    default: true
+
+  lodaria.maintenance:
+    description: Permission pour utiliser la commande de maintenance.
+    default: op
+
+  lodaria.modMessage:
+    description: Permission pour écrire ét voir les messages dans le chat modérateur
+    default: op
+
+  lodaria.staff:
+    description: Permission d'utiliser le /staff
+    default: op
+  lodaria.vanish:
+    description: Permission pour se mettre en vanish
+    default: op
