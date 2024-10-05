@@ -1,0 +1,12 @@
+# Copyright Vanibels lodaria mc
+
+global:
+  name: "Lodaria"
+  version: 2
+  coreVersion: 1.4
+
+# Configuration pour le mode maintenance
+maintenance:
+  name : "Lodaria"
+  motd: "Serveur en maintenance contacter le support discord"
+  kickMessage: "Serveur en maintenance reessayer plus tard"

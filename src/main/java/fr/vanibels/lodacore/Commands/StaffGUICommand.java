@@ -115,6 +115,10 @@ public class StaffGUICommand implements CommandExecutor {
 
                 Player targetBan = Bukkit.getPlayer(args[1]);
                 if (targetBan != null) {
+                    if (BannedPlayer.contains(targetBan)){
+                        player.sendMessage(ChatColor.RED + targetBan.getDisplayName() + "à déja été bannie");
+                        return true;
+                    }
                     String banMessage = "Vous avez été banni par " + player.getName();
                     // Utilise le BanList de Bukkit pour bannir
                     Bukkit.getBanList(BanList.Type.NAME).addBan(targetBan.getName(), banMessage, null, player.getName());
@@ -133,9 +137,14 @@ public class StaffGUICommand implements CommandExecutor {
                 }
 
                 Player targetTempBan = Bukkit.getPlayer(args[1]);
+
                 try {
                     int duration = Integer.parseInt(args[2]); // Durée en minutes
                     if (targetTempBan != null) {
+                        if (TempBannedPlayer.contains(targetTempBan)){
+                            player.sendMessage(ChatColor.RED + targetTempBan.getDisplayName() + "à déja été bannie");
+                            return true;
+                        }
                         String tempBanMessage = "Vous avez été temporairement banni par " + player.getName() + " pour " + duration + " minutes.";
 
                         // Calcul de la durée du ban en millisecondes
@@ -177,6 +186,10 @@ public class StaffGUICommand implements CommandExecutor {
 
                 Player targetMute = Bukkit.getPlayer(args[1]);
                 if (targetMute != null) {
+                    if (MutedPlayers.contains(targetMute)){
+                        player.sendMessage(ChatColor.RED + targetMute.getDisplayName() + "à déja été mute");
+                        return true;
+                    }
                     MutedPlayers.add(targetMute.getName());
                     Bukkit.broadcastMessage(ChatColor.RED + targetMute.getName() + " a été réduit au silence.");
                 } else {
@@ -195,6 +208,10 @@ public class StaffGUICommand implements CommandExecutor {
                     int muteDuration = Integer.parseInt(args[2]); // Durée en minutes
 
                     if (targetTempMute != null) {
+                        if (TempMutedPlayers.contains(targetTempMute)){
+                            player.sendMessage(ChatColor.RED + targetTempMute.getDisplayName() + "à déja été mute");
+                            return true;
+                        }
                         TempMutedPlayers.add(targetTempMute.getName());
                         Bukkit.broadcastMessage(ChatColor.RED + targetTempMute.getName() + " a été réduit au silence pour " + muteDuration + " minutes.");
 

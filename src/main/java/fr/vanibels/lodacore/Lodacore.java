@@ -1,25 +1,17 @@
 package fr.vanibels.lodacore;
 
-import fr.vanibels.lodacore.Commands.CommandListExecutor;
-import fr.vanibels.lodacore.Commands.CommandMaintExecutor;
-import fr.vanibels.lodacore.Commands.StaffGUICommand;
-import fr.vanibels.lodacore.Commands.VanishCommand;
-import fr.vanibels.lodacore.Events.MaintenanceListener;
+import fr.vanibels.lodacore.Commands.*;
 import fr.vanibels.lodacore.Events.ModChatListener;
 import fr.vanibels.lodacore.Events.PlayerConnectionEvent;
+import fr.vanibels.lodacore.Utils.ServerState;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public final class Lodacore extends JavaPlugin {
@@ -30,29 +22,16 @@ public final class Lodacore extends JavaPlugin {
     public static ArrayList<Player> TempBannedPlayer = new ArrayList<>();
     public static List<String> MutedPlayers = new ArrayList<>();
     public static List<String> TempMutedPlayers = new ArrayList<>();
-
-
+    public static Lodacore instance;
+    public static ServerState SSTATE = ServerState.OPEN;
+    public static boolean isMaintenance = false;
     PluginManager pm = Bukkit.getPluginManager();
-    private boolean maintenanceMode = false;
-    private File maintenanceFile;
-    private YamlConfiguration maintenanceConfig;
+
     @Override
     public void onEnable() {
-        // Chargement ou création du fichier de configuration de la maintenance
-        maintenanceFile = new File(getDataFolder(), "maintenance.json");
-        if (!maintenanceFile.exists()) {
-            try {
-                maintenanceFile.createNewFile();
-                maintenanceConfig = YamlConfiguration.loadConfiguration(maintenanceFile);
-                maintenanceConfig.set("allowedPlayers", List.of());
-                saveConfig();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            maintenanceConfig = YamlConfiguration.loadConfiguration(maintenanceFile);
-        }
-
+        SSTATE = ServerState.OPEN;
+        instance= this;
+        saveDefaultConfig();
         // Init events
         pm.registerEvents(new ModChatListener(), this);
         pm.registerEvents(new PlayerConnectionEvent(), this);
@@ -61,8 +40,8 @@ public final class Lodacore extends JavaPlugin {
         getCommand("vanish").setExecutor(new VanishCommand());
         getCommand("staff").setExecutor(new StaffGUICommand(luckPerms));
         getCommand("list").setExecutor(new CommandListExecutor(luckPerms));
-        getCommand("maintenance").setExecutor(new CommandMaintExecutor(this));
-        pm.registerEvents(new MaintenanceListener(this), this);
+        getCommand("maintenance").setExecutor(new CommandMaintExecutor());
+        getCommand("core").setExecutor(new CoreCommandExecutor());
 
         //
         getLogger().info("Lodaria Plugin activé !");
@@ -78,25 +57,19 @@ public final class Lodacore extends JavaPlugin {
         // Nettoyage avant la désactivation
     }
 
-
-    public boolean isMaintenanceMode() {
-        return maintenanceMode;
+    public ServerState setSSTATE(ServerState state){
+        return SSTATE = state;
+    }
+    public ServerState getSSTATE(){
+        return SSTATE;
     }
 
-    public void setMaintenanceMode(boolean maintenanceMode) {
-        this.maintenanceMode = maintenanceMode;
+    public boolean getIsMaintenance(){
+        return isMaintenance;
+    }
+    public boolean setIsMaintenance(boolean b){
+        return isMaintenance = b;
     }
 
-    public List<String> getAllowedPlayers() {
-        return maintenanceConfig.getStringList("allowedPlayers");
-    }
-
-    public void saveConfig() {
-        try {
-            maintenanceConfig.save(maintenanceFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
