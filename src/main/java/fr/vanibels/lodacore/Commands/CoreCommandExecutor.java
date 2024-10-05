@@ -24,7 +24,6 @@ public class CoreCommandExecutor implements CommandExecutor {
                 case "version":
                     sender.sendMessage(ChatColor.GREEN +  ins.getConfig().getString("global.name") + " " +  ins.getConfig().getString("global.version") + "Core version " + ins.getConfig().getInt("global.coreVersion"));
                     break;
-
                 default:
                     sender.sendMessage(ChatColor.RED + "Command inconnue");
 
