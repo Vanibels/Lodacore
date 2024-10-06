@@ -18,11 +18,6 @@ import java.util.List;
 import static fr.vanibels.lodacore.Lodacore.*;
 
 public class StaffGUICommand implements CommandExecutor {
-    private final LuckPerms luckPerms;
-
-    public StaffGUICommand(LuckPerms luckPerms) {
-        this.luckPerms = luckPerms;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -54,44 +49,6 @@ public class StaffGUICommand implements CommandExecutor {
         String subCommand = args[0].toLowerCase();
 
         switch (subCommand) {
-            case "gui":
-                // Créer un inventaire pour la gestion des joueurs
-                Inventory inv = Bukkit.createInventory(null, 54, ChatColor.YELLOW + "Gestion des joueurs");
-
-                // Ajouter chaque joueur avec ses informations
-                int slot = 0;
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-                    ItemMeta meta = playerHead.getItemMeta();
-
-                    assert meta != null;
-                    meta.setDisplayName(ChatColor.GOLD + onlinePlayer.getDisplayName());
-
-                    List<String> lore = new ArrayList<>();
-                    lore.add(ChatColor.GRAY + "UUID: " + onlinePlayer.getUniqueId());
-
-                    // Récupérer le grade via LuckPerms
-                    User user = luckPerms.getUserManager().getUser(onlinePlayer.getUniqueId());
-                    if (user != null) {
-                        String primaryGroup = user.getPrimaryGroup();
-                        lore.add(ChatColor.AQUA + "Grade: " + primaryGroup);
-                    } else {
-                        lore.add(ChatColor.RED + "Aucun grade trouvé");
-                    }
-
-                    lore.add(ChatColor.AQUA + "Santé: " + onlinePlayer.getHealth());
-                    meta.setLore(lore);
-
-                    playerHead.setItemMeta(meta);
-
-                    inv.setItem(slot, playerHead);
-                    slot++;
-                }
-
-                // Ouvrir l'inventaire
-                player.openInventory(inv);
-                break;
-
             case "vanish":
                 if (player.hasPermission("lodaria.vanish")) {
                     boolean isVanished = player.isInvisible();

@@ -38,8 +38,7 @@ public final class Lodacore extends JavaPlugin {
 
         // Init Commands
         getCommand("vanish").setExecutor(new VanishCommand());
-        getCommand("staff").setExecutor(new StaffGUICommand(luckPerms));
-        getCommand("list").setExecutor(new CommandListExecutor(luckPerms));
+        getCommand("staff").setExecutor(new StaffGUICommand());
         getCommand("maintenance").setExecutor(new CommandMaintExecutor());
         getCommand("core").setExecutor(new CoreCommandExecutor());
 
