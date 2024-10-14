@@ -28,7 +28,6 @@ public class CommandMaintExecutor implements CommandExecutor {
             player.sendMessage(ChatColor.RED + "Utilisation: /maintenance <on/off>");
             return true;
         }
-
         switch (args[0].toLowerCase()){
             case "on":
                 ServerState State = instance.getSSTATE();
@@ -56,7 +55,7 @@ public class CommandMaintExecutor implements CommandExecutor {
                 instance.setSSTATE(ServerState.OPEN);
                 instance.setIsMaintenance(false);
                 Bukkit.setWhitelist(false);
-                Bukkit.setMotd("§l§4[LODARIA] §r§6PvP-Fac §1Vanilla 1.XXX §f- §lPréparez-vous pour la V2 \\!");
+                Bukkit.setMotd(instance.getConfig().getString("global.DefaultMotd"));
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()){
                     onlinePlayer.sendTitle(ChatColor.GOLD + "Maintenance désactiver","");
                 }

@@ -1,19 +1,12 @@
 package fr.vanibels.lodacore.Commands;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.model.user.User;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static fr.vanibels.lodacore.Lodacore.*;
 
@@ -21,6 +14,8 @@ public class StaffGUICommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+
         if (!(sender instanceof Player)) {
             sender.sendMessage("La console ne peut pas utiliser cette commande.");
             return true;

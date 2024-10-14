@@ -1,9 +1,11 @@
 # Copyright Vanibels lodaria mc
 
 global:
-  name: "Lodaria"
+  name: "Lodaria "
   version: 2
   coreVersion: 1.4
+  DefaultMotd: "§l§4[LODARIA] §r§6PvP-Fac §1Vanilla 1.XXX §f- §lPréparez-vous pour la V2 \!"
+  EventMotd: "§l§4[LODARIA] §r§6PvP-Fac §1Vanilla 1.XXX §f- §lEvent en cour"
 
 # Configuration pour le mode maintenance
 maintenance:

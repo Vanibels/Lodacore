@@ -5,6 +5,21 @@ api-version: '1.20'
 author: Vanibels
 description: Un plugin pour le serveur Lodaria.
 commands:
+  debug:
+    description: Access au outils de debug.
+    permission: lodaria.tools.debug
+  sur:
+    description: Access kit survivant.
+    permission: lodaria.tools.manag
+  che:
+    description: Access kit chevalier.
+    permission: lodaria.tools.manag
+  sei:
+    description: Access kit seigneur.
+    permission: lodaria.tools.manag
+  dieu:
+    description: Access kit dieu.
+    permission: lodaria.tools.manag
   maintenance:
     description: Gérer le mode maintenance.
     permission: lodaria.maintenance
@@ -19,8 +34,23 @@ commands:
     usage: /vanish
   staff:
     description: Ouvrir le GUI de gestion des joueurs
-    usage: /staff
+    usage: /staff, ss
+    aliases: ss
+  mod:
+    description: Permet d'obtenir les item staff
+    usage: /mod
+  event:
+    description: Permet d'activer ou de desactiver une session d'event
+    usage: /event on/off/annonce
 permissions:
+  lodaria.events:
+    description: Permet de gérer les commandes d'annonce d'event
+  lodaria.tools.debug:
+    description: Permet d'accéder aux commandes administratives.
+
+  lodaria.tools.manag:
+    description: Permet d'accéder aux commandes administratives.
+
   lodaria.admin:
     description: Permet d'accéder aux commandes administratives.
     default: op
