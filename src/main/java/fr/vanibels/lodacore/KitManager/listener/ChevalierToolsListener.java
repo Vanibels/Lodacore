@@ -23,7 +23,7 @@ public class ChevalierToolsListener implements Listener {
         Action ac = e.getAction();
         if (it == null)return;
 
-        if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "Giver LV2 --- CHEVALIER")){
+        if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_RED + "Giver LV2 --- CHEVALIER")){
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK){
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);

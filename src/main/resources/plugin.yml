@@ -1,10 +1,18 @@
 name: Lodacore
-version: '1.4'
+version: '1.5'
 main: fr.vanibels.lodacore.Lodacore
 api-version: '1.20'
 author: Vanibels
+load: STARTUP
 description: Un plugin pour le serveur Lodaria.
 commands:
+  royaume:
+    description: Creé un royaume
+    aliases:
+      - f
+      - r
+      - v
+
   debug:
     description: Access au outils de debug.
     permission: lodaria.tools.debug
@@ -29,28 +37,93 @@ commands:
   core:
     description: Commande du core
     permission: lodaria.admin
-  vanish:
-    description: Rendre le joueur invisible aux autres
-    usage: /vanish
-  staff:
+  sanction:
     description: Ouvrir le GUI de gestion des joueurs
     usage: /staff, ss
     aliases: ss
   mod:
     description: Permet d'obtenir les item staff
     usage: /mod
+  tuto:
+    description: tuto
+    usage: /tuto
+  testASOM:
+    description: Dev test if plugins start
+    usage: /testASOM
+    permission: lodaria.tools.debug
+  spawn:
+    description: Tp to the spawn
+    usage: /spawn
+  rstaff:
+    description: go to staff reunion
+    usage: /rstaff
+    permission: lodaria.supermod
+  s:
+    description: tp to the shop
+    usage: /s
+  arene:
+    usage: /arene /warzone
+    aliases:
+      - warzone
+      - Warzone
+      - Arene
+      - wz
+      - ar
+    description: tp to the aréne
+  discord:
+    usage: /discord
+    description: get discord of Ascaria oneblock
+  vote:
+    usage: /vote
+    description: get lens for vote
+  boutique:
+    usage: /boutique
+    description: get boutique lens
+  menu:
+    usage: /menu
+    description: open the server menu
+  chat:
+    usage: /chat args
+    description: change your chat settings
+  site:
+    usage: /site
+    description: go to the site
   event:
     description: Permet d'activer ou de desactiver une session d'event
     usage: /event on/off/annonce
+  bienvenue:
+    description: donner les premiére instruction au nouveau joueur
+    aliases:
+      - bvn
+    usage: /bvn {player}
 permissions:
+  lodaria.mod:
+    description: Permission d'acceder au permission de moderation
+    default: op
+  lodaria.mod.chat:
+    description: Permission d'acceder au permission de moderation
+    default: op
+  lodaria.mod.conf:
+    description: Permission d'acceder au permission de moderation
+    default: op
+  lodaria.mod.rstaff:
+    description: Permission d'acceder au permission de moderation
+    default: op
+  lodaria.mod.rgameplay:
+    description: Permission d'acceder au permission de moderation
+    default: op
+  lodaria.mod.bypass:
+    description: Permission d'acceder au permission de moderation
+    default: op
+  lodaria.mod.supermod:
+    default: op
+    description: permission d'acces au permission de super operateur
   lodaria.events:
     description: Permet de gérer les commandes d'annonce d'event
   lodaria.tools.debug:
     description: Permet d'accéder aux commandes administratives.
-
   lodaria.tools.manag:
     description: Permet d'accéder aux commandes administratives.
-
   lodaria.admin:
     description: Permet d'accéder aux commandes administratives.
     default: op

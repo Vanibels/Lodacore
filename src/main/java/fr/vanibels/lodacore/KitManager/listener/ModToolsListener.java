@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -14,17 +15,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 
 public class ModToolsListener implements Listener {
+    @EventHandler
     public void onModInteract(PlayerInteractEvent e){
         Player player = e.getPlayer();
         ItemStack it = e.getItem();
         Action ac = e.getAction();
         if (it == null)return;
 
-        if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(org.bukkit.ChatColor.DARK_RED + "Giver LV0 ---Moderator kit")){
+        if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_RED + "Giver LV0 ---Moderator kit")){
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK){
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
-                player.sendTitle(ChatColor.YELLOW + "Giver lv4","");
+                player.sendTitle(ChatColor.YELLOW + "Giver lv0","Moderator");
 
                 //A0001
                 ItemStack item1 = new ItemStack(Material.DIAMOND_SWORD);
@@ -78,6 +80,10 @@ public class ModToolsListener implements Listener {
                 player.getInventory().clear();
                 player.updateInventory();
                 player.getInventory().addItem(item9);
+                player.getInventory().addItem(item8);
+                player.getInventory().addItem(item7);
+                player.getInventory().addItem(item6);
+                player.getInventory().addItem(item1);
 
             }
         }

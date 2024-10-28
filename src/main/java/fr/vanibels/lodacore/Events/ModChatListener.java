@@ -18,7 +18,6 @@ ModChatListener implements Listener {
 
         if (!player.hasPermission("lodaria.modMessage")) return;
         if (!message.startsWith("$")) return;
-
         event.setCancelled(true);
 
         String ModMessage = ChatColor.DARK_GRAY+ "["+ ChatColor.DARK_RED+"STAFF CHAT"+ ChatColor.DARK_GRAY+"] " +ChatColor.GOLD+ player.getDisplayName() + "-" + ChatColor.WHITE + message.replace('$',' ');
@@ -36,6 +35,11 @@ ModChatListener implements Listener {
 
         if (MutedPlayers.contains(player.getName()) || TempMutedPlayers.contains(player.getName())) {
             player.sendMessage(ChatColor.RED + "Vous êtes réduit au silence et ne pouvez pas parler.");
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                if (player.hasPermission("lodaria.modMessage")){
+                    onlinePlayer.sendMessage(ChatColor.GRAY + "Muted player message --- " + event.getMessage());
+                }
+            }
             event.setCancelled(true); // Empêche le message d'être envoyé
         }
     }

@@ -7,8 +7,13 @@ global:
   DefaultMotd: "§l§4[LODARIA] §r§6PvP-Fac §1Vanilla 1.XXX §f- §lPréparez-vous pour la V2 \!"
   EventMotd: "§l§4[LODARIA] §r§6PvP-Fac §1Vanilla 1.XXX §f- §lEvent en cour"
 
+database:
+  url: "jdbc:mysql://localhost:3306/minecraft"
+  username: "root"
+  password: "password"
+
 # Configuration pour le mode maintenance
 maintenance:
   name : "Lodaria"
-  motd: "Serveur en maintenance contacter le support discord"
+  motd: "§c§lMaintenance en cours ! §ePréparez-vous pour la version 2 de Lodaria avec des nouveautés et améliorations !"
   kickMessage: "Serveur en maintenance reessayer plus tard"
