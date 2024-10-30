@@ -8,9 +8,11 @@ global:
   EventMotd: "§l§4[LODARIA] §r§6PvP-Fac §1Vanilla 1.XXX §f- §lEvent en cour"
 
 database:
-  url: "jdbc:mysql://localhost:3306/minecraft"
-  username: "root"
-  password: "password"
+  host: "mysql.railway.internal"
+  port: "3306"
+  DBName : "railway"
+  user: "root"
+  password: "qllLJrbhhqmnpMqoiuckPtJHePkpMsji"
 
 # Configuration pour le mode maintenance
 maintenance:

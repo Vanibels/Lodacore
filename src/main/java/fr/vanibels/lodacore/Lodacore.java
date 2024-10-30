@@ -4,10 +4,10 @@ import fr.vanibels.lodacore.Commands.*;
 import fr.vanibels.lodacore.Events.*;
 import fr.vanibels.lodacore.KitManager.command.*;
 import fr.vanibels.lodacore.KitManager.listener.*;
-import fr.vanibels.lodacore.Managers.Database;
-import fr.vanibels.lodacore.Managers.DatabaseManager;
+import fr.vanibels.lodacore.Managers.DBManagers;
 import fr.vanibels.lodacore.Managers.PlayerManagers;
 import fr.vanibels.lodacore.Utils.ServerState;
+import fr.vanibels.lodacore.cloud.CloudExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,37 +37,16 @@ public final class Lodacore extends JavaPlugin {
     public HashMap<UUID, PlayerManagers> players = new HashMap<UUID, fr.vanibels.lodacore.Managers.PlayerManagers>();
     public Location spawn = new Location(Bukkit.getWorld("world"),-306.500 ,71 ,103.500, 0F, 0F);
     public String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD +"LODARIA"+ ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " ";
-    private DatabaseManager databaseManager;
-    public Database database;
     PluginManager pm = Bukkit.getPluginManager();
-
+    private DBManagers dbManagers;
     @Override
     public void onEnable() {
+
         SSTATE = ServerState.OPEN;
         instance= this;
         saveDefaultConfig();
-        databaseManager = new DatabaseManager();
-        try {
-            databaseManager.connect();
-            databaseManager.setupDatabase(); // Appel pour créer les tables si elles n'existent pas
-        } catch (SQLException e) {
-            e.printStackTrace();
-            getServer().getPluginManager().disablePlugin(this);
-        }
-
-        String url = getConfig().getString("database.url");
-        String username = getConfig().getString("database.username");
-        String password = getConfig().getString("database.password");
-
-        database = new Database(url, username, password);
-        try {
-            database.connect();
-            database.createTables();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            getLogger().severe("Impossible de se connecter à la base de données.");
-        }
-
+        // Load databasse
+        dbManagers = new DBManagers();
         // Init events
         Event();
 
@@ -81,26 +59,8 @@ public final class Lodacore extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        dbManagers.close();
         getLogger().info("Lodaria Plugin désactiation !");
-        setSSTATE(ServerState.OPEN);
-        databaseManager.disconnect();
-
-        try {
-            if (database != null) {
-                database.disconnect();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        // Nettoyage avant la désactivation
-    }
-
-    public DatabaseManager getDatabaseManager() {
-        return databaseManager;
-    }
-
-    public Database getDatabase() {
-        return database;
     }
 
     public void setSSTATE(ServerState state){
@@ -108,6 +68,10 @@ public final class Lodacore extends JavaPlugin {
     }
     public ServerState getSSTATE(){
         return SSTATE;
+    }
+
+    public DBManagers getDbManagers() {
+        return dbManagers;
     }
 
     public boolean getIsMaintenance(){
@@ -130,6 +94,7 @@ public final class Lodacore extends JavaPlugin {
         pm.registerEvents(new ModCancel(),this);
     }
     private void Command(){
+        getCommand("ecloud").setExecutor(new CloudExecutor());
         getCommand("sanction").setExecutor(new StaffCommand());
         getCommand("maintenance").setExecutor(new CommandMaintExecutor());
         getCommand("core").setExecutor(new CoreCommandExecutor());

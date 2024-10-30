@@ -6,13 +6,15 @@ author: Vanibels
 load: STARTUP
 description: Un plugin pour le serveur Lodaria.
 commands:
-  royaume:
-    description: Creé un royaume
-    aliases:
-      - f
-      - r
-      - v
-
+  #royaume:
+  #  description: Creé un royaume
+  #  aliases:
+  #    - f
+  #    - r
+  #    - v
+  ecloud:
+    permission: lodaria.cloud
+    description: obtenir des information/mofifié le prifil d'un joueur en base de donné
   debug:
     description: Access au outils de debug.
     permission: lodaria.tools.debug
@@ -97,6 +99,12 @@ commands:
       - bvn
     usage: /bvn {player}
 permissions:
+  lodaria.cloud:
+    description: Acces au command cloud
+    default: op
+  lodaria.cloud.info:
+    description: Acces un info profil d'un joueur
+    default: op
   lodaria.mod:
     description: Permission d'acceder au permission de moderation
     default: op
