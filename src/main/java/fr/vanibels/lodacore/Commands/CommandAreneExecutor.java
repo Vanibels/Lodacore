@@ -1,5 +1,6 @@
 package fr.vanibels.lodacore.Commands;
 
+import fr.vanibels.lodacore.Utils.TeleportCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,9 +19,10 @@ public class CommandAreneExecutor implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        Location warzone = new Location(Bukkit.getWorld("adventure"), 699.30 ,63.00 ,312.85 ,182.70f ,13.95f);
-        player.sendMessage(ChatColor.GREEN + "Promis aprézs je dev le /arene /warzone");
-        // player.teleport(warzone);
+        Location warzone = new Location(Bukkit.getWorld("warzone"), -534.500 ,53.00 ,-816.500 ,182.70f ,13.95f);
+        player.sendMessage("Téléportation dans la zone de combats " + ChatColor.DARK_RED+"Attention!!!");
+        TeleportCommand teleportCommand = new TeleportCommand();
+        teleportCommand.teleportWithDelayAndCooldown(player,warzone);
 
         return true;
     }

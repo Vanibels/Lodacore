@@ -30,7 +30,7 @@ public class PlayerConnectionEvent implements Listener {
         String playerName = e.getPlayer().getName();
         final UUID uuid = e.getPlayer().getUniqueId();
 
-        final DBConnection ss = instance.getDbManagers().getMainConnection();
+        /*final DBConnection ss = instance.getDbManagers().getMainConnection();
 
         try {
             final Connection connection = ss.getConnection();
@@ -50,10 +50,16 @@ public class PlayerConnectionEvent implements Listener {
             throw new RuntimeException(ex);
         }
 
-
+        */
         OnlinePlayer.add(e.getPlayer());
+        if (!instance.modList.isEmpty()){
+            for (int i = 0; i < instance.modList.size(); i++) {
+                Player moderator = Bukkit.getPlayer(instance.modList.get(i));
+                assert moderator != null;
+                player.hidePlayer(instance, moderator);
+            }
+        }
         player.setGameMode(GameMode.SURVIVAL);
-        player.teleport(instance.spawn);
         String message = (ChatColor.WHITE + "["+ ChatColor.GREEN + "+"+ChatColor.WHITE+ "] " + playerName);
         player.sendMessage(ChatColor.GRAY + "-------------------------------------------");
         player.sendMessage(ChatColor.BLUE + "Bienvenue sur Lodaria");
@@ -64,27 +70,29 @@ public class PlayerConnectionEvent implements Listener {
         e.setJoinMessage(message);
         // mettre le ressource pack du serveur
         // player.setResourcePack("https://www.curseforge.com/minecraft/texture-packs/better-details-texture-models-pack");
-        player.sendTitle(ChatColor.RED +"Lodaria", ChatColor.GREEN +"1.21");
+        player.sendTitle(ChatColor.GOLD +"Lodaria", ChatColor.GREEN +"1.21");
     }
     @EventHandler
     public void PlayerLogoutEvent(PlayerQuitEvent e){
+        Player player = e.getPlayer();
 
-        try {
+        /*try {
             UpdateUserProfilDeconnexion(instance.getDbManagers().getMainConnection().getConnection(), e.getPlayer().getUniqueId());
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
-        }
+        }*/
         OnlinePlayer.remove(e.getPlayer());
-        if (instance.modList.contains(e.getPlayer())) {
-            instance.modList.remove(e.getPlayer());
-            Player player = e.getPlayer();
-
-            PlayerManagers pm = new PlayerManagers(player);
-            pm.destroy();
+        if (instance.modList.contains(player.getUniqueId())) {
+            PlayerManagers pm = PlayerManagers.getFromPlayer(player);
+            instance.modList.remove(player.getUniqueId());
+            player.sendMessage(ChatColor.RED + "Mod modérateur désactivé.");
+            player.getInventory().clear();
             pm.giveIventory();
+            pm.destroy();
+            player.setAllowFlight(false);
+            player.setFlying(false);
         }
         if (instance.vList.contains(e.getPlayer())) instance.vList.remove(e.getPlayer());
-        Player player = e.getPlayer();
         String playerName = e.getPlayer().getName();
         e.setQuitMessage(ChatColor.WHITE + "["+ ChatColor.RED+ "-"+ChatColor.WHITE+ "] " + playerName);
     }
@@ -100,30 +108,7 @@ public class PlayerConnectionEvent implements Listener {
                e.disallow(PlayerLoginEvent.Result.KICK_OTHER, kickMessage);
            }
        }
-    }
-
-    @EventHandler
-    public void onWorld(PlayerChangedWorldEvent e) {
-        Player player = e.getPlayer();
-        // player.getInventory().clear();
-
-    }
-    @EventHandler
-    public void onDeath(PlayerDeathEvent e){
-        Entity entity= e.getEntity();
-        if (!(entity instanceof Player)){
-            return;
-        }
-        e.setKeepInventory(true);
-        e.setNewLevel(0);
-        e.setNewExp(0);
-        e.setDeathMessage(null);
-        Location spawn = instance.spawn;
-        entity.teleport(spawn);
-
-
-    }
-
+    }/*
     public void CreateUserProfil(Connection connection, Player player, UUID uuid){
         try {
             final PreparedStatement ppst = connection.prepareStatement("INSERT INTO player VALUES ?, ?, ?, ?, ?");
@@ -152,6 +137,6 @@ public class PlayerConnectionEvent implements Listener {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
 }

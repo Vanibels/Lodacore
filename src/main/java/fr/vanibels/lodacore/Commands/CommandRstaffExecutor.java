@@ -1,7 +1,9 @@
 package fr.vanibels.lodacore.Commands;
 
+import fr.vanibels.lodacore.Utils.TeleportCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,9 +17,9 @@ public class CommandRstaffExecutor implements CommandExecutor {
 
         }else {
             Player player = (Player) sender;
-            player.sendMessage(ChatColor.GREEN + "Attends aprés je dev promis");
-            // Location staffr = new Location( Bukkit.getWorld("world"),-152.51f, 53.50f, 245.42f, -2068.50f, 5.10f);
-            // player.teleport(staffr);
+            Location staffr = new Location( Bukkit.getWorld("event"),114.500, -60, -43.500);
+            TeleportCommand teleportCommand = new TeleportCommand();
+            teleportCommand.teleportWithDelayAndCooldown(player,staffr);
 
         }
 

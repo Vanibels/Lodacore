@@ -1,10 +1,9 @@
 name: Lodacore
-version: '1.5'
+version: '1.7'
 main: fr.vanibels.lodacore.Lodacore
 api-version: '1.20'
 author: Vanibels
-load: STARTUP
-description: Un plugin pour le serveur Lodaria.
+description: plugin principal du serveur Lodaria.
 commands:
   #royaume:
   #  description: Creé un royaume
@@ -15,20 +14,8 @@ commands:
   ecloud:
     permission: lodaria.cloud
     description: obtenir des information/mofifié le prifil d'un joueur en base de donné
-  debug:
-    description: Access au outils de debug.
-    permission: lodaria.tools.debug
-  sur:
-    description: Access kit survivant.
-    permission: lodaria.tools.manag
-  che:
-    description: Access kit chevalier.
-    permission: lodaria.tools.manag
-  sei:
-    description: Access kit seigneur.
-    permission: lodaria.tools.manag
-  dieu:
-    description: Access kit dieu.
+  lkit:
+    description: Access kit grade.
     permission: lodaria.tools.manag
   maintenance:
     description: Gérer le mode maintenance.
@@ -43,9 +30,6 @@ commands:
     description: Ouvrir le GUI de gestion des joueurs
     usage: /staff, ss
     aliases: ss
-  mod:
-    description: Permet d'obtenir les item staff
-    usage: /mod
   tuto:
     description: tuto
     usage: /tuto
@@ -56,12 +40,20 @@ commands:
   spawn:
     description: Tp to the spawn
     usage: /spawn
+  mine:
+    description: Tp to the minage world
+    aliases:
+      - mine
+      - minage
+    usage: /mine
   rstaff:
     description: go to staff reunion
     usage: /rstaff
     permission: lodaria.supermod
   s:
     description: tp to the shop
+    aliases:
+      - boutique
     usage: /s
   arene:
     usage: /arene /warzone
@@ -86,7 +78,8 @@ commands:
     description: open the server menu
   chat:
     usage: /chat args
-    description: change your chat settings
+    description: manage the chat
+    permission: lodaria.chatmanagers
   site:
     usage: /site
     description: go to the site
@@ -99,6 +92,9 @@ commands:
       - bvn
     usage: /bvn {player}
 permissions:
+  lodaria.user.teleport.bypass:
+    description: Bypass le cooldown et le delai avnt la teleportation
+    default: op
   lodaria.cloud:
     description: Acces au command cloud
     default: op
@@ -151,6 +147,6 @@ permissions:
   lodaria.staff:
     description: Permission d'utiliser le /staff
     default: op
-  lodaria.vanish:
+  lodaria.chatmanagers:
     description: Permission pour se mettre en vanish
     default: op

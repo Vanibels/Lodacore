@@ -1,9 +1,13 @@
 package fr.vanibels.lodacore.Events;
 
 
+import fr.vanibels.lodacore.Commands.StaffCommand;
 import fr.vanibels.lodacore.Managers.PlayerManagers;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static fr.vanibels.lodacore.Lodacore.MutedPlayers;
 import static fr.vanibels.lodacore.Lodacore.instance;
 
 public class ModeratorInteracEvent implements Listener {
@@ -26,6 +31,7 @@ public class ModeratorInteracEvent implements Listener {
         // Si le joueur est gelé, on bloque son mouvement
         if (PlayerManagers.isFreezed(player)) {
             event.setCancelled(true);
+            MutedPlayers.add(event.getPlayer().toString());
         }
     }
     @EventHandler
@@ -55,21 +61,25 @@ public class ModeratorInteracEvent implements Listener {
 
                 break;
             case  DIAMOND_SWORD:
-                target.damage(target.getHealth() + 1f);
+                if (!(e.getRightClicked() instanceof LivingEntity)) return;
+                LivingEntity entity = (LivingEntity) e.getRightClicked();
+                entity.setHealth(0);
                 break;
             case PACKED_ICE:
                 if (PlayerManagers.isFreezed(target)) {
                     // Si le joueur est déjà gelé, on le dégèle
                     instance.freezList.remove(target.getUniqueId());
+                    MutedPlayers.remove(target.getUniqueId().toString());
                     target.sendMessage(ChatColor.GREEN + "Vous avez été dégelé.");
                     return;
                 }
                 // Si le joueur n'est pas gelé, on l'ajoute à la liste des joueurs gelés
                 instance.freezList.add(target.getUniqueId());
-                target.sendMessage(ChatColor.RED + "Vous avez été gelé ! ");
-                target.sendMessage(ChatColor.RED + "Passe ts ts.lodaria.net ou discord /discord ! ");
-                target.sendTitle("&4Vous avez été gelé !","&ePasse ts ts.lodaria.net ou discord /discord ! ");
+                target.sendMessage(ChatColor.RED + "Vous avez été gelé !");
+                target.sendMessage(ChatColor.RED + "Passez sur TeamSpeak : ts.lodaria.net ou sur le Discord : /discord !");
+                target.sendTitle(ChatColor.RED + "Vous avez été gelé !", ChatColor.YELLOW + "Passez sur TeamSpeak : ts.lodaria.net ou Discord : /discord !");
                 break;
+
 
 
             default: break;
@@ -112,6 +122,12 @@ public class ModeratorInteracEvent implements Listener {
                 // Change l'état du vanish à true
                 PlayerManagers.setVanished(player, true);
                 player.sendMessage(ChatColor.RED + "Vous êtes maintenant en vanish.");
+                break;
+            case CHEST:
+                player.performCommand("reports");
+                break;
+            case DEBUG_STICK:
+                player.performCommand("co i");
                 break;
             default: break;
         }

@@ -33,22 +33,32 @@ public class EventCommandExecutor implements CommandExecutor {
         String subCommand = args[0].toLowerCase();
         switch (subCommand) {
             case "on":
-                onlinePlayers.sendTitle("§6Session d'event début dans quelques minutes", "");
-                Bukkit.broadcastMessage("§6Session d'event début dans quelques minutes");
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendTitle("§6Session d'event début dans quelques minutes", "", 10, 70, 20);
+                }
+                Bukkit.broadcastMessage("§6Session d'event débute dans quelques minutes");
                 Bukkit.setMotd(instance.getConfig().getString("global.EventMotd"));
                 break;
+
             case "off":
-                onlinePlayers.sendTitle("§6Session d'event terminé", "");
-                Bukkit.broadcastMessage("[EVENT] §6Session d'event terminé");
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendTitle("§6Session d'event terminé", "", 10, 70, 20);
+                }
+                Bukkit.broadcastMessage("§6Session d'event terminé");
                 Bukkit.setMotd(instance.getConfig().getString("global.DefaultMotd"));
                 break;
+
             case "broadcast":
                 StringBuilder st = new StringBuilder();
-                for (int i = 0; i < args.length; i++) {
-                    st.append(args[i]);
+                for (int i = 1; i < args.length; i++) {  // Commence à i=1 pour ignorer le subCommand "broadcast"
+                    st.append(args[i]).append(" ");
                 }
-                onlinePlayers.sendTitle("[§6Session d'event]","§6" + st);
-                Bukkit.broadcastMessage("§6Session d'event Events " + st);
+                String message = st.toString().trim(); // Retire l'espace final
+
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendTitle("[§6Session d'event]", "§6" + message, 10, 70, 20);
+                }
+                Bukkit.broadcastMessage("§6Session d'event : " + message);
                 break;
 
             default:
@@ -56,5 +66,6 @@ public class EventCommandExecutor implements CommandExecutor {
                 break;
         }
         return true;
+
     }
 }

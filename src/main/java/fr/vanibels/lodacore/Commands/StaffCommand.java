@@ -91,7 +91,6 @@ public class StaffCommand implements CommandExecutor {
                 // Récupération du pseudo du joueur et de la raison
                 String targetName = args[1];
                 StringBuilder reasonBuilder = new StringBuilder();
-
                 // Construction de la raison à partir des arguments restants
                 for (int i = 2; i < args.length; i++) {
                     reasonBuilder.append(args[i]).append(" ");
@@ -105,12 +104,14 @@ public class StaffCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Le joueur " + targetName + " n'est pas en ligne.");
                     return false;
                 }
-
+                if (target.hasPermission("lodaria.mod.bypass")){
+                    player.sendMessage(ChatColor.DARK_RED + "Il semble de cette personne soit immuniser  contre ce genre de tour :)");
+                    return true;
+                }
                 // Affichage du message de bannissement
                 Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Ban permanent de " + ChatColor.WHITE + target.getName() + " pour " + ChatColor.DARK_RED + reason);
 
-                // Logique de bannissement à implémenter si nécessaire (ex: banissement réel du joueur)
-                // Exemple : Bukkit.getBanList(BanList.Type.NAME).addBan(targetName, reason, null, player.getName());
+                banPlayer(target,-1,reason);
 
                 break;
 
@@ -162,6 +163,10 @@ public class StaffCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Le format du temps est incorrect. Utilisez : s (seconde), d (jour), m (mois), a (année)");
                     return false;
                 }
+                if (targetBan.hasPermission("lodaria.mod.bypass")){
+                    player.sendMessage(ChatColor.DARK_RED + "Il semble de cette personne soit immuniser  contre ce genre de tour :)");
+                    return true;
+                }
 
                 // Vérification des limites de bannissement en fonction des permissions
                 if (player.hasPermission("lodaria.mod.supermod") && durationMillis > (3 * 30L * 24 * 60 * 60 * 1000)) {
@@ -186,6 +191,7 @@ public class StaffCommand implements CommandExecutor {
                 } else if (player.hasPermission("lodaria.mod.supermod")) {
                     // Ban maximum de 3 mois
                     Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Ban temporaire de " + ChatColor.WHITE + targetBan.getName() + " pour " + ChatColor.DARK_RED + reasonBan + " pour une durée maximale de 3 mois.");
+                    Bukkit.getPlayer(targetBan.getUniqueId()).kickPlayer(reasonBan);
                     banPlayer(targetBan,durationMillis, reasonBan);
                 }
 
@@ -278,6 +284,10 @@ public class StaffCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Le joueur " + targetKickName + " n'est pas en ligne.");
                     return false;
                 }
+                if (targetKickPlayer.hasPermission("lodaria.mod.bypass")){
+                    player.sendMessage(ChatColor.DARK_RED + "Il semble de cette personne soit immuniser  contre ce genre de tour :)");
+                    return true;
+                }
 
                 // Vérification des permissions
                 if (player.hasPermission("lodaria.mod.rstaff") || player.hasPermission("lodaria.mod.admin")) {
@@ -328,9 +338,9 @@ public class StaffCommand implements CommandExecutor {
                 String timeArg = args[2];
                 String Mutereason = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
 
-                Player targetKick = Bukkit.getPlayer(targetUser);
+                Player targetMute = Bukkit.getPlayer(targetUser);
 
-                if (targetKick == null) {
+                if (targetMute == null) {
                     player.sendMessage(ChatColor.RED + "Le joueur " + targetUser + " n'est pas en ligne.");
                     return false;
                 }
@@ -341,36 +351,40 @@ public class StaffCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Temps invalide spécifié.");
                     return false;
                 }
+                if (targetMute.hasPermission("lodaria.mod.bypass")){
+                    player.sendMessage(ChatColor.DARK_RED + "Il semble de cette personne soit immuniser  contre ce genre de tour :)");
+                    return true;
+                }
 
                 // Gestion des permissions et des limitations
                 if (player.hasPermission("lodaria.mod.rstaff") || player.hasPermission("lodaria.mod.admin")) {
                     // Peut mute sans limite
-                    mutePlayer(targetKick, muteDuration);
+                    mutePlayer(targetMute, muteDuration);
                     Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Mute de " + ChatColor.WHITE + targetUser + " pour " + ChatColor.DARK_RED + Mutereason);
                 } else if (player.hasPermission("lodaria.mod.rgameplay")) {
                     // Peut mute sans limite
-                    mutePlayer(targetKick, muteDuration);
+                    mutePlayer(targetMute, muteDuration);
                     Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Mute de " + ChatColor.WHITE + targetUser + " pour " + ChatColor.DARK_RED + Mutereason);
                 } else if (player.hasPermission("lodaria.mod.supermod")) {
                     if (muteDuration > (365 * 24 * 60 * 60 * 1000L)) { // Maximum 1 an
                         player.sendMessage(ChatColor.RED + "Vous ne pouvez pas muter un joueur pour plus d'un an.");
                         return false;
                     }
-                    mutePlayer(targetKick, muteDuration);
+                    mutePlayer(targetMute, muteDuration);
                     Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Mute de " + ChatColor.WHITE + targetUser + " pour " + ChatColor.DARK_RED + Mutereason);
                 } else if (player.hasPermission("lodaria.mod.conf")) {
                     if (muteDuration > (3 * 30 * 24 * 60 * 60 * 1000L)) { // Maximum 3 mois
                         player.sendMessage(ChatColor.RED + "Vous ne pouvez pas muter un joueur pour plus de 3 mois.");
                         return false;
                     }
-                    mutePlayer(targetKick, muteDuration);
+                    mutePlayer(targetMute, muteDuration);
                     Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Mute de " + ChatColor.WHITE + targetUser + " pour " + ChatColor.DARK_RED + Mutereason);
                 } else if (player.hasPermission("lodaria.mod.chat")) {
                     if (muteDuration > (30 * 24 * 60 * 60 * 1000L)) { // Maximum 1 mois
                         player.sendMessage(ChatColor.RED + "Vous ne pouvez pas muter un joueur pour plus d'un mois.");
                         return false;
                     }
-                    mutePlayer(targetKick, muteDuration);
+                    mutePlayer(targetMute, muteDuration);
                     Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Mute de " + ChatColor.WHITE + targetUser + " pour " + ChatColor.DARK_RED + Mutereason);
                 } else {
                     player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission d'utiliser cette commande.");
@@ -417,7 +431,7 @@ public class StaffCommand implements CommandExecutor {
 
                 // Vérification si le joueur est en ligne
                 Player targetMuted = Bukkit.getPlayer(targetUnmute);
-                if (targetMuted != null) {
+                if (Bukkit.getOnlinePlayers().contains(targetMuted)) {
                     targetMuted.sendMessage(ChatColor.GREEN + "Vous avez été unmuté. Vous pouvez parler à nouveau !");
                 }
 
@@ -463,31 +477,12 @@ public class StaffCommand implements CommandExecutor {
     private void mutePlayer(Player targetPlayer, long muteDuration) {
         // TempMute
         TempMutedPlayers.add(targetPlayer.getName());
-
-        // Création d'un BukkitRunnable pour retirer le mute après muteDuration
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                // Retrait du joueur de la liste des muets temporaires
-                TempMutedPlayers.remove(targetPlayer.getName());
-
-                // Envoi d'un message au joueur que le mute a été retiré
-                if (targetPlayer.isOnline()) {
-                    targetPlayer.sendMessage(ChatColor.GREEN + "Votre mute a été retiré. Vous pouvez parler à nouveau !");
-                }
-            }
-        }.runTaskLater(instance, muteDuration / 50); // Convertir les millisecondes en ticks (1 tick = 50 ms)
         //Mute
         if (muteDuration == -1){
             MutedPlayers.add(targetPlayer.getName());
         }
 
     }
-
-    /**
-     * Méthode utilitaire pour analyser le temps avec différents suffixes.
-     */
-
 
     private void openStaffGUI(Player player) {
         // Crée un inventaire de type coffre avec 9 emplacements (modifiable si plus de joueurs avec la permission)

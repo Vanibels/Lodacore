@@ -44,51 +44,14 @@ public class PlayerManagers {
         instance.players.put(player.getUniqueId(), this);
     }
     public void setup(){
-        //A0006
-        ItemStack item6 = new ItemStack(Material.DIAMOND_HELMET);
-        ItemMeta itemMeta6 = item6.getItemMeta();
-        itemMeta6.setDisplayName(net.md_5.bungee.api.ChatColor.YELLOW + "Casque du §4Moderateur");
-        itemMeta6.setLore(Arrays.asList("§eForgé par §cVanibels"));
-        itemMeta6.setUnbreakable(true);
-        item6.setItemMeta(itemMeta6);
-
-        player.getInventory().setHelmet(item6);
-
-        //A0007
-        ItemStack item7 = new ItemStack(Material.DIAMOND_CHESTPLATE);
-        ItemMeta itemMeta7 = item7.getItemMeta();
-        itemMeta7.setDisplayName(net.md_5.bungee.api.ChatColor.YELLOW + "Plastron du §4Moderateur");
-        itemMeta7.setLore(Arrays.asList("§eForgé par §cVanibels"));
-        itemMeta7.setUnbreakable(true);
-        item7.setItemMeta(itemMeta7);
-
-        player.getInventory().setChestplate(item7);
-
-        //A0008
-        ItemStack item8 = new ItemStack(Material.NETHERITE_LEGGINGS);
-        ItemMeta itemMeta8 = item8.getItemMeta();
-        itemMeta8.setDisplayName(net.md_5.bungee.api.ChatColor.YELLOW + "Jambiere du §4Moderateur");
-        itemMeta8.setLore(Arrays.asList("§eForgé par §cVanibels"));
-        itemMeta8.setUnbreakable(true);
-        item8.setItemMeta(itemMeta8);
-
-        player.getInventory().setLeggings(item8);
-
-        //A0009
-        ItemStack item9 = new ItemStack(Material.DIAMOND_BOOTS);
-        ItemMeta itemMeta9 = item9.getItemMeta();
-        itemMeta9.setDisplayName(net.md_5.bungee.api.ChatColor.YELLOW + "Botte du §4Moderateur");
-        itemMeta9.setLore(Arrays.asList("§eForgé par §cVanibels"));
-        itemMeta9.setUnbreakable(true);
-        item9.setItemMeta(itemMeta9);
-        player.getInventory().setBoots(item9);
-
         ItemStack invSee = new ItemBuilder(Material.PAPER).setName(ChatColor.GREEN +"Voir inventaire").setLore("Click droit sur un joueur").toItemStack();
         ItemStack vanish = new ItemBuilder(Material.BLAZE_POWDER).setName(ChatColor.YELLOW +"Vanish").setLore("Click droit pour passer en vanish").toItemStack();
         ItemStack freeze = new ItemBuilder(Material.PACKED_ICE).setName(ChatColor.BLUE +"Freeze").setLore("Click droit sur un joueur").toItemStack();
         ItemStack rbTp = new ItemBuilder(Material.ENDER_EYE).setName(ChatColor.DARK_GREEN +"Aller a un joueur").setLore("Click droit pour","aller a un joueur").toItemStack();
         ItemStack kbTester = new ItemBuilder(Material.STICK).setName(ChatColor.DARK_GRAY +"KB").setLore("Click guache test les kb").addUnsafeEnchantment(Enchantment.KNOCKBACK, 5).toItemStack();
-        ItemStack playerKiller = new ItemBuilder(Material.DIAMOND_SWORD).setName(ChatColor.RED +"Killer").setLore("Click droit sur un joueur","pour le tuer").toItemStack();
+        ItemStack playerKiller = new ItemBuilder(Material.DIAMOND_SWORD).setName(ChatColor.RED +"Killer").setLore("Click droit sur un joueur/entité","pour le tuer").toItemStack();
+        ItemStack DebugStick = new ItemBuilder(Material.DEBUG_STICK).setName(ChatColor.DARK_PURPLE + "Debugger").setLore("Execute la commande /co i").toItemStack();
+        ItemStack Reports = new ItemBuilder(Material.CHEST).setName(ChatColor.GOLD + "Reports").setLore("Execute la commande /reports").toItemStack();
 
         player.getInventory().setItem(0,invSee);
         player.getInventory().setItem(1,vanish);
@@ -96,12 +59,14 @@ public class PlayerManagers {
         player.getInventory().setItem(3,rbTp);
         player.getInventory().setItem(4,kbTester);
         player.getInventory().setItem(5,playerKiller);
-        player.sendMessage(ChatColor.GREEN+"Outils de moderation");
+        player.getInventory().setItem(6,DebugStick);
+        player.getInventory().setItem(7,Reports);
+        player.sendMessage(ChatColor.GREEN+"Outils de moderation activé");
         player.setAllowFlight(true);
         player.setFlying(true);
         player.setGameMode(GameMode.CREATIVE);
         player.setCollidable(false);
-        player.sendTitle("&6Mode moderation","&2Activé");
+        player.sendTitle(ChatColor.RED + "Mode moderation",ChatColor.GREEN + "Activé");
 
 
     }

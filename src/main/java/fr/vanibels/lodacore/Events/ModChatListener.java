@@ -24,7 +24,7 @@ ModChatListener implements Listener {
 
         // Parcours tous les joueurs en ligne
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission("lodaria.modMessage")){
+            if (onlinePlayer.hasPermission("lodaria.modMessage")){
                 onlinePlayer.sendMessage(ModMessage);
             }
         }
@@ -33,14 +33,27 @@ ModChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
+        if (event.getMessage().startsWith("/"))return;
         if (MutedPlayers.contains(player.getName()) || TempMutedPlayers.contains(player.getName())) {
             player.sendMessage(ChatColor.RED + "Vous êtes réduit au silence et ne pouvez pas parler.");
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("lodaria.modMessage")){
-                    onlinePlayer.sendMessage(ChatColor.GRAY + "Muted player message --- " + event.getMessage());
+                    onlinePlayer.sendMessage(ChatColor.GRAY + "Muted player message --- " + player.getName() + " " + event.getMessage());
                 }
             }
             event.setCancelled(true); // Empêche le message d'être envoyé
         }
+        /*
+        Mute cmd functions
+        if (CMDMutedPlayers.contains(player.getName())){
+            player.sendMessage(ChatColor.RED + "Vous ne pouvez utiliser que les commandes de base pendant la duré de votre sanction");
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                if (player.hasPermission("lodaria.modMessage")){
+                    onlinePlayer.sendMessage(ChatColor.GRAY + "Muted player message --- " + player.getName() + " " +  event.getMessage());
+                }
+            }
+            event.setCancelled(true); // Empêche le message d'être envoyé
+        }
+        */
     }
 }

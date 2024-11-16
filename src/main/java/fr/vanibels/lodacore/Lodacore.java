@@ -3,7 +3,7 @@ package fr.vanibels.lodacore;
 import fr.vanibels.lodacore.Commands.*;
 import fr.vanibels.lodacore.Events.*;
 import fr.vanibels.lodacore.KitManager.command.*;
-import fr.vanibels.lodacore.KitManager.listener.*;
+import fr.vanibels.lodacore.KitManager.listener.KitListener;
 import fr.vanibels.lodacore.Managers.DBManagers;
 import fr.vanibels.lodacore.Managers.PlayerManagers;
 import fr.vanibels.lodacore.Utils.ServerState;
@@ -23,8 +23,6 @@ import java.util.UUID;
 public final class Lodacore extends JavaPlugin {
 
     public static List<Player> OnlinePlayer = new ArrayList<>();
-    public static List<Player> BannedPlayer = new ArrayList<>();
-    public static ArrayList<Player> TempBannedPlayer = new ArrayList<>();
     public static List<String> MutedPlayers = new ArrayList<>();
     public static List<String> TempMutedPlayers = new ArrayList<>();
     public static Lodacore instance;
@@ -36,9 +34,9 @@ public final class Lodacore extends JavaPlugin {
     public boolean isVanish;
     public HashMap<UUID, PlayerManagers> players = new HashMap<UUID, fr.vanibels.lodacore.Managers.PlayerManagers>();
     public Location spawn = new Location(Bukkit.getWorld("world"),-306.500 ,71 ,103.500, 0F, 0F);
-    public String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD +"LODARIA"+ ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " ";
+    public String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD +"Lodaria"+ ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " ";
     PluginManager pm = Bukkit.getPluginManager();
-    private DBManagers dbManagers;
+    //private DBManagers dbManagers;
     @Override
     public void onEnable() {
 
@@ -46,7 +44,7 @@ public final class Lodacore extends JavaPlugin {
         instance= this;
         saveDefaultConfig();
         // Load databasse
-        dbManagers = new DBManagers();
+        // dbManagers = new DBManagers();
         // Init events
         Event();
 
@@ -59,7 +57,7 @@ public final class Lodacore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        dbManagers.close();
+        // dbManagers.close();
         getLogger().info("Lodaria Plugin désactiation !");
     }
 
@@ -70,9 +68,9 @@ public final class Lodacore extends JavaPlugin {
         return SSTATE;
     }
 
-    public DBManagers getDbManagers() {
+    /*public DBManagers getDbManagers() {
         return dbManagers;
-    }
+    }*/
 
     public boolean getIsMaintenance(){
         return isMaintenance;
@@ -83,38 +81,28 @@ public final class Lodacore extends JavaPlugin {
     private void Event(){
         pm.registerEvents(new ModChatListener(), this);
         pm.registerEvents(new PlayerConnectionEvent(), this);
-        pm.registerEvents(new ChevalierToolsListener(), this);
-        pm.registerEvents(new DebugerToolsListener(), this);
-        pm.registerEvents(new DieuToolsListener(), this);
-        pm.registerEvents(new SeigneurToolsListener(), this);
-        pm.registerEvents(new SurvivantToolsListener(), this);
-        pm.registerEvents(new ModToolsListener(), this);
+        pm.registerEvents(new KitListener(), this);
         pm.registerEvents(new ModQuitEvent(),this);
         pm.registerEvents(new ModeratorInteracEvent(),this);
         pm.registerEvents(new ModCancel(),this);
     }
     private void Command(){
-        getCommand("ecloud").setExecutor(new CloudExecutor());
+        // getCommand("ecloud").setExecutor(new CloudExecutor());
         getCommand("sanction").setExecutor(new StaffCommand());
         getCommand("maintenance").setExecutor(new CommandMaintExecutor());
         getCommand("core").setExecutor(new CoreCommandExecutor());
-        getCommand("sur").setExecutor(new SurExecutor());
-        getCommand("che").setExecutor(new CheExecutor());
-        getCommand("sei").setExecutor(new SeiExecutor());
-        getCommand("dieu").setExecutor(new DieuExecutor());
-        getCommand("debug").setExecutor(new DebugExecutor());
-        getCommand("mod").setExecutor(new ModExecutor());
+        getCommand("lkit").setExecutor(new KitExecutor());
         getCommand("tuto").setExecutor(new CommandTutoExecutor());
         // getCommand("chat").setExecutor(new CommandChatExecutor());
         getCommand("testASOM").setExecutor(new CommandTestExecutor());
         getCommand("spawn").setExecutor(new CommandSpawnExecutor());
+        getCommand("mine").setExecutor(new CommandMineExecutor());
         getCommand("rstaff").setExecutor(new CommandRstaffExecutor());
         getCommand("arene").setExecutor(new CommandAreneExecutor());
         getCommand("s").setExecutor(new CommandShopExecutor());
         getCommand("discord").setExecutor(new CommandDiscordExecutor());
         getCommand("vote").setExecutor(new CommandVoteExecutor());
         getCommand("boutique").setExecutor(new CommandBoutiqueExecutor());
-        getCommand("menu").setExecutor(new CommandMenuExecutor());
         getCommand("site").setExecutor(new CommandSiteExecutor());
         getCommand("bienvenue").setExecutor(new CommandBienvenueExecutor());
     }

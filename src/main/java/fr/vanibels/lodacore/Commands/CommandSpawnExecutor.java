@@ -1,5 +1,6 @@
 package fr.vanibels.lodacore.Commands;
 
+import fr.vanibels.lodacore.Utils.TeleportCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,8 +21,8 @@ public class CommandSpawnExecutor implements CommandExecutor {
         }else{
             Player player = (Player) sender;
             player.sendMessage(ChatColor.GREEN+"Teleportation");
-            Location spawn = instance.spawn;
-            player.teleport(spawn);
+            TeleportCommand teleportCommand = new TeleportCommand();
+            teleportCommand.teleportWithDelayAndCooldown(player,instance.spawn);
         }
 
         return true;
