@@ -43,10 +43,12 @@ ModChatListener implements Listener {
             }
             event.setCancelled(true); // Empêche le message d'être envoyé
         }
-        /*
-        Mute cmd functions
+
         if (CMDMutedPlayers.contains(player.getName())){
             player.sendMessage(ChatColor.RED + "Vous ne pouvez utiliser que les commandes de base pendant la duré de votre sanction");
+            String message = event.getMessage();
+            if (message.startsWith("/spawn") || message.startsWith("/helpop") || message.startsWith("/warp") || message.startsWith("/f") || message.startsWith("/r") || message.startsWith("/menu") || message.startsWith("/arene") || message.startsWith("/wz") || message.startsWith("/warzone") || message.startsWith("/ar") || message.startsWith("/tuto")|| message.startsWith("/site")|| message.startsWith("/ts")|| message.startsWith("/discord")|| message.startsWith("/boutique")) return;
+
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("lodaria.modMessage")){
                     onlinePlayer.sendMessage(ChatColor.GRAY + "Muted player message --- " + player.getName() + " " +  event.getMessage());
@@ -54,6 +56,6 @@ ModChatListener implements Listener {
             }
             event.setCancelled(true); // Empêche le message d'être envoyé
         }
-        */
+
     }
 }

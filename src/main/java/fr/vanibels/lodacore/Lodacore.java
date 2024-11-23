@@ -24,6 +24,7 @@ public final class Lodacore extends JavaPlugin {
 
     public static List<Player> OnlinePlayer = new ArrayList<>();
     public static List<String> MutedPlayers = new ArrayList<>();
+    public static List<String> CMDMutedPlayers = new ArrayList<>();
     public static List<String> TempMutedPlayers = new ArrayList<>();
     public static Lodacore instance;
     public static ServerState SSTATE = ServerState.OPEN;

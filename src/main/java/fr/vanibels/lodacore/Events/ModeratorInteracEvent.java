@@ -12,10 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -66,6 +69,13 @@ public class ModeratorInteracEvent implements Listener {
                 entity.setHealth(0);
                 break;
             case PACKED_ICE:
+                if (!PlayerManagers.isFreezed(target)){
+                    instance.freezList.add(target.getUniqueId());
+                    target.sendMessage(ChatColor.RED + "Vous avez été gelé !");
+                    target.sendMessage(ChatColor.RED + "Passez sur TeamSpeak : ts.lodaria.net ou sur le Discord : /discord !");
+                    target.sendTitle(ChatColor.RED + "Vous avez été gelé !", ChatColor.YELLOW + "Passez sur TeamSpeak : ts.lodaria.net ou Discord : /discord !");
+                    return;
+                }
                 if (PlayerManagers.isFreezed(target)) {
                     // Si le joueur est déjà gelé, on le dégèle
                     instance.freezList.remove(target.getUniqueId());
@@ -74,11 +84,7 @@ public class ModeratorInteracEvent implements Listener {
                     return;
                 }
                 // Si le joueur n'est pas gelé, on l'ajoute à la liste des joueurs gelés
-                instance.freezList.add(target.getUniqueId());
-                target.sendMessage(ChatColor.RED + "Vous avez été gelé !");
-                target.sendMessage(ChatColor.RED + "Passez sur TeamSpeak : ts.lodaria.net ou sur le Discord : /discord !");
-                target.sendTitle(ChatColor.RED + "Vous avez été gelé !", ChatColor.YELLOW + "Passez sur TeamSpeak : ts.lodaria.net ou Discord : /discord !");
-                break;
+                 break;
 
 
 
@@ -133,4 +139,37 @@ public class ModeratorInteracEvent implements Listener {
         }
 
     }
+
+    @EventHandler
+    public void CoreInteractorEditorEvenet(InventoryInteractEvent e){
+        Player player = (Player) e.getWhoClicked();
+        ItemStack it = e.getWhoClicked().getItemInUse();
+        Inventory inv = e.getInventory();
+
+        if ( !(inv.getType().name().equals(ChatColor.GOLD + "Editeur"))) return;
+
+        switch (it.getType()){
+            case ENCHANTED_BOOK:
+                e.setCancelled(true);
+                break;
+            case BARRIER:
+                e.setCancelled(true);
+                break;
+            case NAME_TAG:
+                e.setCancelled(true);
+                break;
+            case ANVIL:
+                e.setCancelled(true);
+                break;
+            case PAPER:
+                e.setCancelled(true);
+                break;
+            case BOOKSHELF:
+                e.setCancelled(true);
+                break;
+            default: e.setCancelled(true);
+        }
+
+    }
+
 }
