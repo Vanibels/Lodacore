@@ -76,6 +76,12 @@ public class ItemBuilder {
         is.setDurability(Short.MAX_VALUE);
         return this;
     }
+    public ItemBuilder UnBreak(){
+        ItemMeta im = is.getItemMeta();
+        im.setUnbreakable(true);
+        is.setItemMeta(im);
+        return this;
+    }
 
     public ItemBuilder setLore(String... lore) {
         ItemMeta im = is.getItemMeta();
@@ -106,5 +112,9 @@ public class ItemBuilder {
         return is;
     }
 
+    public ItemBuilder setAmount(int i) {
+        is.setAmount(i);
+        return this;
+    }
 }
 
