@@ -4,10 +4,8 @@ import fr.vanibels.lodacore.Commands.*;
 import fr.vanibels.lodacore.Events.*;
 import fr.vanibels.lodacore.KitManager.command.*;
 import fr.vanibels.lodacore.KitManager.listener.KitListener;
-import fr.vanibels.lodacore.Managers.DBManagers;
 import fr.vanibels.lodacore.Managers.PlayerManagers;
-import fr.vanibels.lodacore.Utils.ServerState;
-import fr.vanibels.lodacore.cloud.CloudExecutor;
+import fr.vanibels.lodacore.Managers.Utils.ServerState;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -21,7 +19,6 @@ import java.util.List;
 import java.util.UUID;
 
 public final class Lodacore extends JavaPlugin {
-
     public static List<Player> OnlinePlayer = new ArrayList<>();
     public static List<String> MutedPlayers = new ArrayList<>();
     public static List<String> CMDMutedPlayers = new ArrayList<>();
@@ -30,25 +27,21 @@ public final class Lodacore extends JavaPlugin {
     public static ServerState SSTATE = ServerState.OPEN;
     public static boolean isMaintenance = false;
     public ArrayList<UUID> modList = new ArrayList<>();
-    public ArrayList<UUID> vList = new ArrayList<>();
-    public ArrayList<UUID> freezList = new ArrayList<>();
-    public boolean isVanish;
+    public ArrayList<UUID> vanishPlayers = new ArrayList<>();
+    public ArrayList<UUID> frozenPlayers = new ArrayList<>();
+    public ArrayList<UUID> vanishedPlayers = new ArrayList<>();
+    public ArrayList<UUID> superVanishedPlayers = new ArrayList<>();
     public HashMap<UUID, PlayerManagers> players = new HashMap<UUID, fr.vanibels.lodacore.Managers.PlayerManagers>();
-    public Location spawn = new Location(Bukkit.getWorld("world"),-306.500 ,71 ,103.500, 0F, 0F);
-    public String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD +"Lodaria"+ ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " ";
+    public Location spawn = new Location(Bukkit.getWorld("lobby"), 0.53, 57.00, 0.48, 0F, 0F);
+    public String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD +"Lodaria"+ ChatColor.DARK_GRAY + "]" + " [" + ChatColor.DARK_AQUA + "CORE" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
     PluginManager pm = Bukkit.getPluginManager();
     //private DBManagers dbManagers;
     @Override
     public void onEnable() {
-
-        SSTATE = ServerState.OPEN;
+        SSTATE = ServerState.MAINTENANCE;
         instance= this;
-        saveDefaultConfig();
-        // Load databasse
-        // dbManagers = new DBManagers();
         // Init events
         Event();
-
         // Init Commands
         Command();
         //
@@ -88,24 +81,26 @@ public final class Lodacore extends JavaPlugin {
         pm.registerEvents(new ModCancel(),this);
     }
     private void Command(){
-        // getCommand("ecloud").setExecutor(new CloudExecutor());
         getCommand("sanction").setExecutor(new StaffCommand());
         getCommand("maintenance").setExecutor(new CommandMaintExecutor());
         getCommand("core").setExecutor(new CoreCommandExecutor());
         getCommand("lkit").setExecutor(new KitExecutor());
         getCommand("tuto").setExecutor(new CommandTutoExecutor());
-        // getCommand("chat").setExecutor(new CommandChatExecutor());
         getCommand("testASOM").setExecutor(new CommandTestExecutor());
-        getCommand("spawn").setExecutor(new CommandSpawnExecutor());
-        getCommand("mine").setExecutor(new CommandMineExecutor());
         getCommand("rstaff").setExecutor(new CommandRstaffExecutor());
-        getCommand("arene").setExecutor(new CommandAreneExecutor());
-        getCommand("s").setExecutor(new CommandShopExecutor());
         getCommand("discord").setExecutor(new CommandDiscordExecutor());
-        getCommand("vote").setExecutor(new CommandVoteExecutor());
-        getCommand("boutique").setExecutor(new CommandBoutiqueExecutor());
+        getCommand("jour").setExecutor(new CommandJourExecutor());
+        getCommand("nuit").setExecutor(new CommandNuitExecutor());
         getCommand("site").setExecutor(new CommandSiteExecutor());
         getCommand("bienvenue").setExecutor(new CommandBienvenueExecutor());
+        getCommand("join").setExecutor(new CommandJoinExecutor());
+        getCommand("spawn").setExecutor(new CommandSpawnExecutor());
+        getCommand("sun").setExecutor(new CommandSunExecutor());
+        getCommand("rain").setExecutor(new CommandRainExecutor());
+        getCommand("speedon").setExecutor(new CommandSpeedExecutor());
+        getCommand("speedoff").setExecutor(new CommandSpeedExecutor());
+        getCommand("vanish").setExecutor(new CommandVanishExecutor());
+        getCommand("vanish").setExecutor(new CommandSuperVanishExecutor());
     }
 
 }

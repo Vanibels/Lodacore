@@ -1,29 +1,32 @@
 package fr.vanibels.lodacore.Events;
 
-import fr.vanibels.lodacore.Managers.DBConnection;
 import fr.vanibels.lodacore.Managers.PlayerManagers;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.sql.*;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static fr.vanibels.lodacore.Lodacore.*;
 
 public class PlayerConnectionEvent implements Listener {
+
+    @EventHandler
+    public void PlayerDeathEvent(PlayerDeathEvent e){
+        e.setDeathMessage("");
+        Player player = e.getEntity();
+        Location spawnLocation = instance.spawn;
+        player.teleport(spawnLocation);
+        player.sendMessage("Vous êtes mort");
+    }
     @EventHandler
     public void PlayerJoinEvent(PlayerJoinEvent e){
         Player player = e.getPlayer();
@@ -51,7 +54,6 @@ public class PlayerConnectionEvent implements Listener {
         }
 
         */
-        OnlinePlayer.add(e.getPlayer());
         if (!instance.modList.isEmpty()){
             for (int i = 0; i < instance.modList.size(); i++) {
                 Player moderator = Bukkit.getPlayer(instance.modList.get(i));
@@ -59,18 +61,40 @@ public class PlayerConnectionEvent implements Listener {
                 player.hidePlayer(instance, moderator);
             }
         }
+        Location lobby = new Location(Bukkit.getWorld("lobby"),7.61, 156.00, -295.70, 0F, 0F);
+        player.teleport(lobby);
         player.setGameMode(GameMode.SURVIVAL);
         String message = (ChatColor.WHITE + "["+ ChatColor.GREEN + "+"+ChatColor.WHITE+ "] " + playerName);
         player.sendMessage(ChatColor.GRAY + "-------------------------------------------");
         player.sendMessage(ChatColor.BLUE + "Bienvenue sur Lodaria");
         player.sendMessage(ChatColor.BLUE + "Connecter entant que " + playerName);
         player.sendMessage(ChatColor.BLUE + "Viens sur discord: /discord ");
-        player.sendMessage(ChatColor.BLUE + "/spawn pour aller au spawn: ");
+        player.sendMessage(ChatColor.BLUE + "/join pour aller au rejoindre aprés le login: ");
         player.sendMessage(ChatColor.GRAY + "-------------------------------------------");
         e.setJoinMessage(message);
         // mettre le ressource pack du serveur
         // player.setResourcePack("https://www.curseforge.com/minecraft/texture-packs/better-details-texture-models-pack");
         player.sendTitle(ChatColor.GOLD +"Lodaria", ChatColor.GREEN +"1.21");
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if (!onlinePlayer.hasPermission("lodaria.mod.vanish.view")){
+                if (!instance.vanishPlayers.isEmpty()){
+                    for (int i = 0; i <= instance.vanishPlayers.size(); i++) {
+                        Player vanished = Bukkit.getPlayer(instance.vanishPlayers.get(i));
+                        onlinePlayer.hidePlayer(instance,vanished);
+                    }
+                }
+                if (!instance.superVanishedPlayers.isEmpty()){
+                    for (int i = 0; i <= instance.superVanishedPlayers.size(); i++) {
+                        Player vanished = Bukkit.getPlayer(instance.superVanishedPlayers.get(i));
+                        player.hidePlayer(instance,vanished);
+                    }
+                }
+                else {
+                    return;
+                }
+            }
+        }
     }
     @EventHandler
     public void PlayerLogoutEvent(PlayerQuitEvent e){
@@ -92,7 +116,7 @@ public class PlayerConnectionEvent implements Listener {
             player.setAllowFlight(false);
             player.setFlying(false);
         }
-        if (instance.vList.contains(e.getPlayer())) instance.vList.remove(e.getPlayer());
+        if (instance.vanishPlayers.contains(e.getPlayer())) instance.vanishPlayers.remove(e.getPlayer());
         String playerName = e.getPlayer().getName();
         e.setQuitMessage(ChatColor.WHITE + "["+ ChatColor.RED+ "-"+ChatColor.WHITE+ "] " + playerName);
     }

@@ -1,22 +1,27 @@
 package fr.vanibels.lodacore.KitManager.listener;
 
+import fr.vanibels.lodacore.Managers.Utils.ItemBuilder;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Color;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.material.MaterialData;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class KitListener implements Listener {
 
@@ -27,6 +32,7 @@ public class KitListener implements Listener {
         ItemStack it = e.getItem();
         Action ac = e.getAction();
         if (it == null) return;
+        // Evenement survivor kit's
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.LIGHT_PURPLE + "Giver LV1 --- SURVIVANT")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
@@ -42,58 +48,6 @@ public class KitListener implements Listener {
                 item1.setItemMeta(itemMeta1);
 
                 player.getInventory().addItem(item1);
-
-                //A0002
-                ItemStack item2 = new ItemStack(Material.WOODEN_HOE);
-                ItemMeta itemMeta2 = item2.getItemMeta();
-                itemMeta2.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Hoe LV1");
-                itemMeta2.setLore(Arrays.asList("Incassable cette Hoe", "Peut etre echangee"));
-                itemMeta2.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta2.addEnchant(Enchantment.DIG_SPEED, 1, true);
-                itemMeta2.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 1, true);
-                itemMeta2.setUnbreakable(true);
-                item2.setItemMeta(itemMeta2);
-
-                player.getInventory().addItem(item2);
-
-
-                //A0003
-                ItemStack item3 = new ItemStack(Material.WOODEN_SHOVEL);
-                ItemMeta itemMeta3 = item3.getItemMeta();
-                itemMeta3.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Pelle LV1");
-                itemMeta3.setLore(Arrays.asList("Incassable cette pelle", "Peut etre echangee"));
-                itemMeta3.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta3.addEnchant(Enchantment.DIG_SPEED, 1, true);
-                itemMeta3.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 1, true);
-                itemMeta3.setUnbreakable(true);
-                item3.setItemMeta(itemMeta3);
-
-                player.getInventory().addItem(item3);
-
-                //A0004
-                ItemStack item4 = new ItemStack(Material.WOODEN_PICKAXE);
-                ItemMeta itemMeta4 = item4.getItemMeta();
-                itemMeta4.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Pioche LV1");
-                itemMeta4.setLore(Arrays.asList("Incassable cette pioche", "Peut etre echangee"));
-                itemMeta4.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta4.setUnbreakable(true);
-                itemMeta4.addEnchant(Enchantment.DIG_SPEED, 1, true);
-                itemMeta4.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 1, true);
-                item4.setItemMeta(itemMeta4);
-
-                player.getInventory().addItem(item4);
-
-                //A0005
-                ItemStack item5 = new ItemStack(Material.WOODEN_AXE);
-                ItemMeta itemMeta5 = item5.getItemMeta();
-                itemMeta5.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Hache LV1");
-                itemMeta5.setLore(Arrays.asList("Incassable cette hache", "Peut etre echangee"));
-                itemMeta5.setUnbreakable(true);
-                itemMeta5.addEnchant(Enchantment.DIG_SPEED, 1, true);
-                itemMeta5.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 1, true);
-                item5.setItemMeta(itemMeta5);
-
-                player.getInventory().addItem(item5);
 
                 //A0006
                 ItemStack item6 = new ItemStack(Material.LEATHER_HELMET);
@@ -138,6 +92,7 @@ public class KitListener implements Listener {
 
             }
         }
+        // Evenement knight kit's
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(org.bukkit.ChatColor.DARK_RED + "Giver LV2 --- CHEVALIER")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
@@ -155,58 +110,6 @@ public class KitListener implements Listener {
                 item1.setItemMeta(itemMeta1);
 
                 player.getInventory().addItem(item1);
-
-                //B0002
-                ItemStack item2 = new ItemStack(Material.STONE_HOE);
-                ItemMeta itemMeta2 = item2.getItemMeta();
-                itemMeta2.setDisplayName(org.bukkit.ChatColor.RED + "Hoe LV2");
-                itemMeta2.setLore(Arrays.asList("Incassable cette Hoe", "Peut etre echangee"));
-                itemMeta2.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta2.addEnchant(Enchantment.DIG_SPEED, 2, true);
-                itemMeta2.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 2, true);
-                itemMeta2.setUnbreakable(true);
-                item2.setItemMeta(itemMeta2);
-
-                player.getInventory().addItem(item2);
-
-
-                //B0003
-                ItemStack item3 = new ItemStack(Material.STONE_SHOVEL);
-                ItemMeta itemMeta3 = item3.getItemMeta();
-                itemMeta3.setDisplayName(org.bukkit.ChatColor.RED + "Pelle LV2");
-                itemMeta3.setLore(Arrays.asList("Incassable cette pelle", "Peut etre echangee"));
-                itemMeta3.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta3.addEnchant(Enchantment.DIG_SPEED, 2, true);
-                itemMeta3.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 2, true);
-                itemMeta3.setUnbreakable(true);
-                item3.setItemMeta(itemMeta3);
-
-                player.getInventory().addItem(item3);
-
-                //B0004
-                ItemStack item4 = new ItemStack(Material.IRON_PICKAXE);
-                ItemMeta itemMeta4 = item4.getItemMeta();
-                itemMeta4.setDisplayName(org.bukkit.ChatColor.RED + "Pioche LV2");
-                itemMeta4.setLore(Arrays.asList("Incassable cette pioche", "Peut etre echangee"));
-                itemMeta4.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta4.setUnbreakable(true);
-                itemMeta4.addEnchant(Enchantment.DIG_SPEED, 2, true);
-                itemMeta4.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 2, true);
-                item4.setItemMeta(itemMeta4);
-
-                player.getInventory().addItem(item4);
-
-                //B0005
-                ItemStack item5 = new ItemStack(Material.STONE_AXE);
-                ItemMeta itemMeta5 = item5.getItemMeta();
-                itemMeta5.setDisplayName(org.bukkit.ChatColor.RED + "Hache LV2");
-                itemMeta5.setLore(Arrays.asList("Incassable cette hache", "Peut etre echangee"));
-                itemMeta5.setUnbreakable(true);
-                itemMeta5.addEnchant(Enchantment.DIG_SPEED, 2, true);
-                itemMeta5.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 2, true);
-                item5.setItemMeta(itemMeta5);
-
-                player.getInventory().addItem(item5);
 
                 //B0006
                 ItemStack item6 = new ItemStack(Material.IRON_HELMET);
@@ -255,6 +158,7 @@ public class KitListener implements Listener {
 
             }
         }
+        // Evenement lord kit's
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "Giver LV3 --- SEIGNEUR")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
@@ -273,58 +177,6 @@ public class KitListener implements Listener {
                 item1.setItemMeta(itemMeta1);
 
                 player.getInventory().addItem(item1);
-
-                //A0002
-                ItemStack item2 = new ItemStack(Material.DIAMOND_HOE);
-                ItemMeta itemMeta2 = item2.getItemMeta();
-                itemMeta2.setDisplayName(ChatColor.GREEN + "Hoe LV3");
-                itemMeta2.setLore(Arrays.asList("Incassable cette Hoe", "Peut etre echangee"));
-                itemMeta2.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta2.addEnchant(Enchantment.DIG_SPEED, 3, true);
-                itemMeta2.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 3, true);
-                itemMeta2.setUnbreakable(true);
-                item2.setItemMeta(itemMeta2);
-
-                player.getInventory().addItem(item2);
-
-
-                //A0003
-                ItemStack item3 = new ItemStack(Material.DIAMOND_SHOVEL);
-                ItemMeta itemMeta3 = item3.getItemMeta();
-                itemMeta3.setDisplayName(ChatColor.GREEN + "Pelle LV3");
-                itemMeta3.setLore(Arrays.asList("Incassable cette pelle", "Peut etre echangee"));
-                itemMeta3.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta3.addEnchant(Enchantment.DIG_SPEED, 3, true);
-                itemMeta3.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 3, true);
-                itemMeta3.setUnbreakable(true);
-                item3.setItemMeta(itemMeta3);
-
-                player.getInventory().addItem(item3);
-
-                //A0004
-                ItemStack item4 = new ItemStack(Material.DIAMOND_PICKAXE);
-                ItemMeta itemMeta4 = item4.getItemMeta();
-                itemMeta4.setDisplayName(ChatColor.GREEN + "Pioche LV3");
-                itemMeta4.setLore(Arrays.asList("Incassable cette pioche", "Peut etre echangee"));
-                itemMeta4.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta4.setUnbreakable(true);
-                itemMeta4.addEnchant(Enchantment.DIG_SPEED, 3, true);
-                itemMeta4.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 3, true);
-                item4.setItemMeta(itemMeta4);
-
-                player.getInventory().addItem(item4);
-
-                //A0005
-                ItemStack item5 = new ItemStack(Material.DIAMOND_AXE);
-                ItemMeta itemMeta5 = item5.getItemMeta();
-                itemMeta5.setDisplayName(ChatColor.GREEN + "Hache LV3");
-                itemMeta5.setLore(Arrays.asList("Incassable cette hache", "Peut etre echangee"));
-                itemMeta5.setUnbreakable(true);
-                itemMeta5.addEnchant(Enchantment.DIG_SPEED, 3, true);
-                itemMeta5.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 3, true);
-                item5.setItemMeta(itemMeta5);
-
-                player.getInventory().addItem(item5);
 
                 //A0006
                 ItemStack item6 = new ItemStack(Material.DIAMOND_HELMET);
@@ -373,6 +225,7 @@ public class KitListener implements Listener {
 
             }
         }
+        // Evenement god kit's
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.YELLOW + "Giver LV4 --- DIEU")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
@@ -391,59 +244,6 @@ public class KitListener implements Listener {
                 item1.setItemMeta(itemMeta1);
 
                 player.getInventory().addItem(item1);
-
-                //A0002
-                ItemStack item2 = new ItemStack(Material.DIAMOND_HOE);
-                ItemMeta itemMeta2 = item2.getItemMeta();
-                itemMeta2.setDisplayName(ChatColor.YELLOW + "Hoe LV4");
-                itemMeta2.setLore(Arrays.asList("Incassable cette Hoe", "Peut etre echangee"));
-                itemMeta2.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta2.addEnchant(Enchantment.DIG_SPEED, 4, true);
-                itemMeta2.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 4, true);
-                itemMeta2.setUnbreakable(true);
-                item2.setItemMeta(itemMeta2);
-
-                player.getInventory().addItem(item2);
-
-
-                //A0003
-                ItemStack item3 = new ItemStack(Material.DIAMOND_SHOVEL);
-                ItemMeta itemMeta3 = item3.getItemMeta();
-                itemMeta3.setDisplayName(ChatColor.YELLOW + "Pelle LV4");
-                itemMeta3.setLore(Arrays.asList("Incassable cette pelle", "Peut etre echangee"));
-                itemMeta3.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta3.addEnchant(Enchantment.DIG_SPEED, 4, true);
-                itemMeta3.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 4, true);
-                itemMeta3.setUnbreakable(true);
-                item3.setItemMeta(itemMeta3);
-
-                player.getInventory().addItem(item3);
-
-                //A0004
-                ItemStack item4 = new ItemStack(Material.DIAMOND_PICKAXE);
-                ItemMeta itemMeta4 = item4.getItemMeta();
-                itemMeta4.setDisplayName(ChatColor.YELLOW + "Pioche LV4");
-                itemMeta4.setLore(Arrays.asList("Incassable cette pioche", "Peut etre echangee"));
-                itemMeta4.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); // Facultatif : pour masquer les attributs de l'item
-                itemMeta4.setUnbreakable(true);
-                itemMeta4.addEnchant(Enchantment.DIG_SPEED, 4, true);
-                itemMeta4.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 4, true);
-                item4.setItemMeta(itemMeta4);
-
-                player.getInventory().addItem(item4);
-
-                //A0005
-                ItemStack item5 = new ItemStack(Material.DIAMOND_AXE);
-                ItemMeta itemMeta5 = item5.getItemMeta();
-                itemMeta5.setDisplayName(ChatColor.YELLOW + "Hache LV4");
-                itemMeta5.setLore(Arrays.asList("Incassable cette hache", "Peut etre echangee"));
-                itemMeta5.setUnbreakable(true);
-                itemMeta5.addEnchant(Enchantment.DIG_SPEED, 4, true);
-                itemMeta5.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 4, true);
-                item5.setItemMeta(itemMeta5);
-
-                player.getInventory().addItem(item5);
-
                 //A0006
                 ItemStack item6 = new ItemStack(Material.DIAMOND_HELMET);
                 ItemMeta itemMeta6 = item6.getItemMeta();
@@ -490,6 +290,7 @@ public class KitListener implements Listener {
 
             }
         }
+        // Try moderator kit's
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_RED + "Giver LV0 ---Moderator kit")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
@@ -555,6 +356,7 @@ public class KitListener implements Listener {
 
             }
         }
+        // Debug kit
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(org.bukkit.ChatColor.DARK_PURPLE + "Giver LV0 --- Dev debuger")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
@@ -576,12 +378,13 @@ public class KitListener implements Listener {
 
         // grade kit's
 
+        // Kit Roturier
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GRAY + "Kit Roturier")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 player.sendTitle(ChatColor.LIGHT_PURPLE + "Giver lv1", "");
-
+                // Bois
                 /*/A0001
                 ItemStack item1 = new ItemStack(Material.STONE_SWORD);
                 ItemMeta itemMeta1 = item1.getItemMeta();
@@ -660,7 +463,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -690,12 +493,13 @@ public class KitListener implements Listener {
 
             }
         }
+        // Kit Baron
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_AQUA + "Kit Baron")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 player.sendTitle(ChatColor.LIGHT_PURPLE + "Giver lv1", "");
-
+                // Pierre
                 /*/A0001
                 ItemStack item1 = new ItemStack(Material.STONE_SWORD);
                 ItemMeta itemMeta1 = item1.getItemMeta();
@@ -774,7 +578,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -804,6 +608,7 @@ public class KitListener implements Listener {
 
             }
         }
+        // Kit Vicomte
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.LIGHT_PURPLE + "Kit Vicomte")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
@@ -888,7 +693,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -918,12 +723,13 @@ public class KitListener implements Listener {
 
             }
         }
+        // Kit comte
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.AQUA + "Kit Comte")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 player.sendTitle(ChatColor.LIGHT_PURPLE + "Giver lv1", "");
-
+                // Fer
                 /*/A0001
                 ItemStack item1 = new ItemStack(Material.STONE_SWORD);
                 ItemMeta itemMeta1 = item1.getItemMeta();
@@ -1002,7 +808,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -1032,12 +838,13 @@ public class KitListener implements Listener {
 
             }
         }
+        // Kit marquis
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GREEN + "Kit Marquis")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 player.sendTitle(ChatColor.LIGHT_PURPLE + "Giver lv1", "");
-
+                // Fer
                 /*/A0001
                 ItemStack item1 = new ItemStack(Material.STONE_SWORD);
                 ItemMeta itemMeta1 = item1.getItemMeta();
@@ -1116,7 +923,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -1146,12 +953,13 @@ public class KitListener implements Listener {
 
             }
         }
+        // Kit duc
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.DARK_PURPLE + "Kit Duc")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 player.sendTitle(ChatColor.LIGHT_PURPLE + "Giver lv1", "");
-
+                // Diamant
                 /*/A0001
                 ItemStack item1 = new ItemStack(Material.STONE_SWORD);
                 ItemMeta itemMeta1 = item1.getItemMeta();
@@ -1230,7 +1038,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -1260,12 +1068,13 @@ public class KitListener implements Listener {
 
             }
         }
+        // Kit rois
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.GOLD + "Kit Rois")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 player.sendTitle(ChatColor.LIGHT_PURPLE + "Giver lv1", "");
-
+                // Or
                 /*/A0001
                 ItemStack item1 = new ItemStack(Material.STONE_SWORD);
                 ItemMeta itemMeta1 = item1.getItemMeta();
@@ -1344,7 +1153,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -1374,17 +1183,18 @@ public class KitListener implements Listener {
 
             }
         }
+        // Kit empereur
         if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.YELLOW + "Kit Empereur")) {
             if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
                 player.sendTitle(ChatColor.LIGHT_PURPLE + "Giver lv1", "");
-
-                /*/A0001
-                ItemStack item1 = new ItemStack(Material.STONE_SWORD);
+                // Netherite
+                //A0001
+                ItemStack item1 = new ItemStack(Material.NETHERITE_SWORD);
                 ItemMeta itemMeta1 = item1.getItemMeta();
-                itemMeta1.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Dague du survivant");
-                itemMeta1.setLore(Arrays.asList("Ancien dag des heros", "Cette lame est emoussee"));
+                itemMeta1.setDisplayName(org.bukkit.ChatColor.BLUE + "Lame Divine");
+                itemMeta1.setLore(Arrays.asList("Epe sacrée forgé par le forgeron des dieux", "Et donner au humains par une déesse"));
                 itemMeta1.addEnchant(Enchantment.DURABILITY, 1, true);
                 item1.setItemMeta(itemMeta1);
 
@@ -1442,7 +1252,7 @@ public class KitListener implements Listener {
 
                 player.getInventory().addItem(item5);
 
-                *///A0006
+                //A0006
                 ItemStack item6 = new ItemStack(Material.IRON_HELMET);
                 ItemMeta itemMeta6 = item6.getItemMeta();
                 itemMeta6.setDisplayName(org.bukkit.ChatColor.GRAY + "Casque des roturiers");
@@ -1458,7 +1268,7 @@ public class KitListener implements Listener {
                 itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Tunique de villageois");
                 itemMeta7.setLore(Arrays.asList("Chemise sale", "Sert dans les champs"));
                 itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
-                Color itemColor =hexToColor("9D9D97");
+                Color itemColor = hexToColor("9D9D97");
                 itemMeta7.setColor(itemColor);
                 item7.setItemMeta(itemMeta7);
 
@@ -1488,23 +1298,350 @@ public class KitListener implements Listener {
 
             }
         }
-    }
-    public static Color hexToColor(String hexCode) {
-        // Vérifie si le code commence par '#' et a une longueur de 7 caractères
-        if (hexCode == null || !hexCode.startsWith("#") || hexCode.length() != 7) {
-            throw new IllegalArgumentException("Le code hexadécimal doit être au format #RRGGBB !");
+        // Event castel raid
+        if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.YELLOW + "Kit Defenseur")) {
+            if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
+                player.getInventory().clear();
+                player.updateInventory();
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+
+                //A0001
+                ItemStack item1 = new ItemStack(Material.STONE_SWORD);
+                ItemMeta itemMeta1 = item1.getItemMeta();
+                itemMeta1.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Dague des defenseurs");
+                itemMeta1.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                itemMeta1.addEnchant(Enchantment.DURABILITY, 1, true);
+                itemMeta1.setUnbreakable(true);
+                item1.setItemMeta(itemMeta1);
+
+                player.getInventory().setItem(0, item1);
+
+                //A0006
+                ItemStack item6 = new ItemStack(Material.IRON_HELMET);
+                ItemMeta itemMeta6 = item6.getItemMeta();
+                itemMeta6.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Casque des defenseurs");
+                itemMeta6.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                itemMeta6.addEnchant(Enchantment.DURABILITY, 1, true);
+                itemMeta6.setUnbreakable(true);
+                item6.setItemMeta(itemMeta6);
+
+                player.getInventory().setHelmet(item6);
+
+                //A0007
+                ItemStack item7 = new ItemStack(Material.LEATHER_CHESTPLATE);
+                ItemMeta itemMeta7 = item7.getItemMeta();
+                itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Chemise des defenseurs");
+                itemMeta7.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
+                itemMeta7.setUnbreakable(true);
+                item7.setItemMeta(itemMeta7);
+
+                player.getInventory().setChestplate(item7);
+
+                //A0008
+                ItemStack item8 = new ItemStack(Material.CHAINMAIL_LEGGINGS);
+                ItemMeta itemMeta8 = item8.getItemMeta();
+                itemMeta8.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Cullot des defenseurs");
+                itemMeta8.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                itemMeta8.addEnchant(Enchantment.DURABILITY, 1, true);
+                itemMeta8.setUnbreakable(true);
+                item8.setItemMeta(itemMeta8);
+
+                player.getInventory().setLeggings(item8);
+
+                //A0009
+                ItemStack item9 = new ItemStack(Material.GOLDEN_BOOTS);
+                ItemMeta itemMeta9 = item9.getItemMeta();
+                itemMeta9.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Botte du defenseur");
+                itemMeta9.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                itemMeta9.addEnchant(Enchantment.DURABILITY, 1, true);
+                itemMeta9.setUnbreakable(true);
+                item9.setItemMeta(itemMeta9);
+
+                player.getInventory().setBoots(item9);
+
+                ItemStack Fireball = new ItemBuilder(Material.FIRE_CHARGE).setAmount(15).addEnchant(Enchantment.ARROW_DAMAGE, 2).setName(ChatColor.RED + "Boule de feu").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                ItemStack Bow = new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_INFINITE, 1).setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").setName(ChatColor.RED + "Arc").UnBreak().toItemStack();
+                ItemStack Crossbow = new ItemBuilder(Material.CROSSBOW).addEnchant(Enchantment.IMPALING, 1).setName(ChatColor.RED + "Fusil").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                ItemStack Grapp = new ItemBuilder(Material.FISHING_ROD).addEnchant(Enchantment.LOYALTY, 10).setName(ChatColor.RED + "Grappin").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                ItemStack Arrow = new ItemBuilder(Material.ARROW).addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(ChatColor.RED + "Flêche").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                ItemStack Balle = new ItemBuilder(Material.FIREWORK_ROCKET).setAmount(15).addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(ChatColor.RED + "Balle").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                ItemStack Bouffe = new ItemBuilder(Material.GOLDEN_CARROT).setAmount(64).addEnchant(Enchantment.LUCK, 1).setName(ChatColor.RED + "Bouffe").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                player.getInventory().setItemInOffHand(Balle);
+                player.getInventory().setItem(1, Fireball);
+                player.getInventory().setItem(2, Bouffe);
+                player.getInventory().setItem(6, Grapp);
+                player.getInventory().setItem(7, Crossbow);
+                player.getInventory().setItem(8, Bow);
+                player.getInventory().setItem(17, Arrow);
+
+                player.updateInventory();
+
+            }
+        }
+            if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.YELLOW + "Kit Attaquant")) {
+                if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
+                    player.getInventory().clear();
+                    player.updateInventory();
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+
+                    //A0001
+                    ItemStack item1 = new ItemStack(Material.STONE_SWORD);
+                    ItemMeta itemMeta1 = item1.getItemMeta();
+                    itemMeta1.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Dague des Attaquants");
+                    itemMeta1.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                    itemMeta1.addEnchant(Enchantment.DURABILITY, 1, true);
+                    itemMeta1.setUnbreakable(true);
+                    item1.setItemMeta(itemMeta1);
+
+                    player.getInventory().setItem(0, item1);
+
+                    //A0006
+                    ItemStack item6 = new ItemStack(Material.IRON_HELMET);
+                    ItemMeta itemMeta6 = item6.getItemMeta();
+                    itemMeta6.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Casque des Attaquants");
+                    itemMeta6.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                    itemMeta6.addEnchant(Enchantment.DURABILITY, 1, true);
+                    itemMeta6.setUnbreakable(true);
+                    item6.setItemMeta(itemMeta6);
+
+                    player.getInventory().setHelmet(item6);
+
+                    //A0007
+                    ItemStack item7 = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
+                    ItemMeta itemMeta7 = item7.getItemMeta();
+                    itemMeta7.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Chemise des Attaquants");
+                    itemMeta7.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                    itemMeta7.addEnchant(Enchantment.DURABILITY, 1, true);
+                    itemMeta7.setUnbreakable(true);
+                    item7.setItemMeta(itemMeta7);
+
+                    player.getInventory().setChestplate(item7);
+
+                    //A0008
+                    ItemStack item8 = new ItemStack(Material.LEATHER_LEGGINGS);
+                    ItemMeta itemMeta8 = item8.getItemMeta();
+                    itemMeta8.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Cullot des Attaquants");
+                    itemMeta8.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                    itemMeta8.addEnchant(Enchantment.DURABILITY, 1, true);
+                    itemMeta8.setUnbreakable(true);
+                    item8.setItemMeta(itemMeta8);
+
+                    player.getInventory().setLeggings(item8);
+
+                    //A0009
+                    ItemStack item9 = new ItemStack(Material.GOLDEN_BOOTS);
+                    ItemMeta itemMeta9 = item9.getItemMeta();
+                    itemMeta9.setDisplayName(org.bukkit.ChatColor.LIGHT_PURPLE + "Botte des Attaquants");
+                    itemMeta9.setLore(Arrays.asList(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================"));
+                    itemMeta9.addEnchant(Enchantment.DURABILITY, 1, true);
+                    itemMeta9.setUnbreakable(true);
+                    item9.setItemMeta(itemMeta9);
+
+                    player.getInventory().setBoots(item9);
+
+                    ItemStack Fireball = new ItemBuilder(Material.FIRE_CHARGE).setAmount(15).addEnchant(Enchantment.ARROW_DAMAGE, 2).setName(ChatColor.RED + "Boule de feu").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Bow = new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_INFINITE, 1).setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").setName(ChatColor.RED + "Arc").UnBreak().toItemStack();
+                    ItemStack Crossbow = new ItemBuilder(Material.CROSSBOW).addEnchant(Enchantment.IMPALING, 1).setName(ChatColor.RED + "Fusil").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Grapp = new ItemBuilder(Material.FISHING_ROD).addEnchant(Enchantment.LOYALTY, 10).setName(ChatColor.RED + "Grappin").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Arrow = new ItemBuilder(Material.ARROW).addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(ChatColor.RED + "Flêche").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Balle = new ItemBuilder(Material.FIREWORK_ROCKET).setAmount(15).addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(ChatColor.RED + "Balle").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Bouffe = new ItemBuilder(Material.GOLDEN_CARROT).setAmount(64).addEnchant(Enchantment.LUCK, 1).setName(ChatColor.RED + "Bouffe").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    player.getInventory().setItemInOffHand(Balle);
+                    player.getInventory().setItem(1, Fireball);
+                    player.getInventory().setItem(2, Bouffe);
+                    player.getInventory().setItem(6, Grapp);
+                    player.getInventory().setItem(7, Crossbow);
+                    player.getInventory().setItem(8, Bow);
+                    player.getInventory().setItem(17, Arrow);
+
+                    player.updateInventory();
+
+
+                }
+            }
+            if (it.getType() == Material.NETHER_STAR && it.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.YELLOW + "Arme event raid")) {
+                if (ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK) {
+                    player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+                    /*
+                     * ChatColor.RED + "================",ChatColor.YELLOW + " ◈ Item Event ◈ ",ChatColor.RED + "================"
+                     * Fire ball arc arbaléte trident hache en pierre
+                     */
+                    ItemStack Fireball = new ItemBuilder(Material.FIRE_CHARGE).addEnchant(Enchantment.ARROW_DAMAGE, 2).setName(ChatColor.RED + "Boule de feu").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Bow = new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_INFINITE, 1).setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").setName(ChatColor.RED + "Arc").UnBreak().toItemStack();
+                    ItemStack Crossbow = new ItemBuilder(Material.CROSSBOW).addEnchant(Enchantment.IMPALING, 1).setName(ChatColor.RED + "Fusil").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Trident = new ItemBuilder(Material.TRIDENT).addEnchant(Enchantment.LOYALTY, 4).setName(ChatColor.RED + "Trident").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Grapp = new ItemBuilder(Material.FISHING_ROD).addEnchant(Enchantment.LOYALTY, 10).setName(ChatColor.RED + "Grappin").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Arrow = new ItemBuilder(Material.ARROW).addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(ChatColor.RED + "Flêche").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Balle = new ItemBuilder(Material.FIREWORK_ROCKET).addEnchant(Enchantment.ARROW_DAMAGE, 1).setName(ChatColor.RED + "Balle").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+                    ItemStack Bouffe = new ItemBuilder(Material.GOLDEN_CARROT).addEnchant(Enchantment.LUCK, 1).setName(ChatColor.RED + "Bouffe").setLore(ChatColor.RED + "================", ChatColor.YELLOW + " ◈ Item Event ◈ ", ChatColor.RED + "================").UnBreak().toItemStack();
+
+                    player.getInventory().addItem(Fireball);
+                    player.getInventory().addItem(Bow);
+                    player.getInventory().addItem(Crossbow);
+                    player.getInventory().addItem(Trident);
+                    player.getInventory().addItem(Grapp);
+                    player.getInventory().addItem(Arrow);
+                    player.getInventory().addItem(Balle);
+                    player.getInventory().addItem(Bouffe);
+                }
+            }
+
+
         }
 
-        try {
-            // Extrait les composantes RVB du code hexadécimal
-            int red = Integer.parseInt(hexCode.substring(1, 3), 16); // Rouge
-            int green = Integer.parseInt(hexCode.substring(3, 5), 16); // Vert
-            int blue = Integer.parseInt(hexCode.substring(5, 7), 16); // Bleu
+        // Liste des blocs destructibles
+        private final List<Material> destructibleBlocks = Arrays.asList(
+                Material.SPRUCE_FENCE, Material.IRON_BARS
+        );
 
-            // Retourne un objet Color avec les composantes RVB
-            return Color.fromRGB(red, green, blue);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Le code hexadécimal contient des caractères non valides !");
+        @EventHandler
+        public void onFireballLaunch (PlayerInteractEvent event){
+            Player player = event.getPlayer();
+            ItemStack item = player.getInventory().getItemInMainHand();
+
+            // Vérifie si l'item est bien une boule de feu et a le bon nom
+            if (item.getType() == Material.FIRE_CHARGE && item.hasItemMeta()) {
+                ItemMeta meta = item.getItemMeta();
+                if (meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.RED + "Boule de feu")) {
+
+                    // Retire l'objet après l'utilisation
+                    if (item.getAmount() > 1) {
+                        item.setAmount(item.getAmount() - 1);
+                    } else {
+                        player.getInventory().removeItem(item);
+                    }
+
+                    // Crée une boule de feu personnalisée
+                    Fireball fireball = player.launchProjectile(Fireball.class);
+                    fireball.setVelocity(player.getLocation().getDirection().multiply(2)); // Accélération x2
+                    fireball.setIsIncendiary(false); // Ne met pas le feu
+                    fireball.setYield(0); // Désactive l'explosion classique
+
+                    event.setCancelled(true); // Annule l'interaction mais après le lancement
+                }
+            }
+        }
+
+        @EventHandler
+        public void onFireballHit (ProjectileHitEvent event){
+            if (event.getEntity() instanceof Fireball) {
+                Fireball fireball = (Fireball) event.getEntity();
+                Entity hitEntity = event.getHitEntity();
+                Location explosionLocation = fireball.getLocation();
+
+                // Détruit uniquement les blocs spécifiques
+                breakSpecificBlocks(explosionLocation, 3); // Rayon de 3 blocs
+
+                // Effet d'explosion sans endommager d'autres blocs
+                fireball.getWorld().playSound(explosionLocation, Sound.ENTITY_GENERIC_EXPLODE, 1f, 1f);
+                fireball.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, explosionLocation, 5);
+
+                // Repousse les entités touchées
+                if (hitEntity != null) {
+                    Vector knockback = hitEntity.getLocation().toVector().subtract(fireball.getLocation().toVector()).normalize().multiply(1.5);
+                    hitEntity.setVelocity(knockback);
+                    hitEntity.playEffect(EntityEffect.HURT);
+                }
+
+                fireball.remove();
+            }
+        }
+
+        // Méthode pour casser uniquement les blocs autorisés dans un rayon donné
+        private void breakSpecificBlocks (Location center,int radius){
+            World world = center.getWorld();
+            if (world == null) return;
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        Block block = world.getBlockAt(center.clone().add(x, y, z));
+
+                        if (destructibleBlocks.contains(block.getType())) {
+                            block.breakNaturally(); // Casse le bloc normalement
+                        }
+                    }
+                }
+            }
+        }
+        @EventHandler
+        public void onPlayerUseFishingRod (PlayerFishEvent event){
+            Player player = event.getPlayer();
+            ItemStack item = player.getInventory().getItemInMainHand();
+
+            // Vérifie si c'est une canne à pêche avec le nom "Grappling Hook"
+            if (item.getType() == Material.FISHING_ROD && item.hasItemMeta()) {
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null && meta.hasDisplayName() && meta.getDisplayName().equals(ChatColor.RED + "Grappin")) {
+
+                    // Vérifie si l'événement est le lancement ou l'attrapage du grappin
+                    if (event.getState() == PlayerFishEvent.State.REEL_IN || event.getState() == PlayerFishEvent.State.IN_GROUND) {
+                        Projectile hook = event.getHook();
+                        Location hookLocation = hook.getLocation();
+                        Location playerLocation = player.getLocation();
+
+                        // Calcule la direction du grappin
+                        Vector pullDirection = hookLocation.toVector().subtract(playerLocation.toVector()).normalize().multiply(1.5);
+
+                        // Applique une vitesse au joueur
+                        player.setVelocity(pullDirection);
+
+                        // Effet sonore pour le fun
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1f, 1f);
+
+                        // Particules lors du grappinage
+                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation(), 10);
+
+                        // Empêche le grappin de ramener des items ou des entités
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+
+        @EventHandler
+        public void onCrossbowShoot (EntityShootBowEvent event){
+            if (event.getBow() != null && event.getBow().getType() == Material.CROSSBOW) {
+                if (event.getProjectile() instanceof Firework) {
+                    Firework firework = (Firework) event.getProjectile();
+                    FireworkMeta meta = firework.getFireworkMeta();
+
+                    // Ajoute une explosion si elle n'existe pas
+                    if (meta.getEffects().isEmpty()) {
+                        FireworkEffect effect = FireworkEffect.builder()
+                                .with(FireworkEffect.Type.BALL_LARGE)
+                                .withColor(Color.RED)
+                                .withFade(Color.YELLOW)
+                                .withFlicker()
+                                .build();
+                        meta.addEffect(effect);
+                        firework.setFireworkMeta(meta);
+                    }
+                }
+            }
+        }
+
+
+        public static Color hexToColor (String hexCode){
+            // Vérifie si le code commence par '#' et a une longueur de 7 caractères
+            if (hexCode == null || !hexCode.startsWith("#") || hexCode.length() != 7) {
+                throw new IllegalArgumentException("Le code hexadécimal doit être au format #RRGGBB !");
+            }
+
+            try {
+                // Extrait les composantes RVB du code hexadécimal
+                int red = Integer.parseInt(hexCode.substring(1, 3), 16); // Rouge
+                int green = Integer.parseInt(hexCode.substring(3, 5), 16); // Vert
+                int blue = Integer.parseInt(hexCode.substring(5, 7), 16); // Bleu
+
+                // Retourne un objet Color avec les composantes RVB
+                return Color.fromRGB(red, green, blue);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Le code hexadécimal contient des caractères non valides !");
+            }
         }
     }
-}
+
+

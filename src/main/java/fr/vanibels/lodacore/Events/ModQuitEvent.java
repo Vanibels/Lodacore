@@ -14,7 +14,7 @@ public class ModQuitEvent implements Listener {
         Player player = e.getPlayer();
 
         if (instance.modList.contains(player.getUniqueId())){
-            instance.modList.add(player.getUniqueId());
+            instance.modList.remove(player.getUniqueId());
             player.setAllowFlight(true);
             player.setFlying(true);
             PlayerManagers pm = PlayerManagers.getFromPlayer(player);

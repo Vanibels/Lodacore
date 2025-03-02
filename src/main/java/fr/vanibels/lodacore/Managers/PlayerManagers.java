@@ -1,15 +1,13 @@
 package fr.vanibels.lodacore.Managers;
 
-import fr.vanibels.lodacore.Utils.ItemBuilder;
+import fr.vanibels.lodacore.Managers.Utils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Arrays;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import static fr.vanibels.lodacore.Lodacore.instance;
 
@@ -20,18 +18,18 @@ public class PlayerManagers {
         return instance.modList.contains(player.getUniqueId());
     }
     public static boolean isVanished(Player player){
-        return instance.vList.contains(player.getUniqueId());
+        return instance.vanishPlayers.contains(player.getUniqueId());
 
     }
     public static void setVanished(Player player, boolean vanish) {
         if (vanish) {
-            instance.vList.add(player.getUniqueId());
+            instance.vanishPlayers.add(player.getUniqueId());
         } else {
-            instance.vList.remove(player.getUniqueId());
+            instance.vanishPlayers.remove(player.getUniqueId());
         }
     }
     public static boolean isFreezed(Player player){
-        return instance.freezList.contains(player.getUniqueId());
+        return instance.frozenPlayers.contains(player.getUniqueId());
 
     }
 
@@ -43,33 +41,73 @@ public class PlayerManagers {
     public void init(){
         instance.players.put(player.getUniqueId(), this);
     }
-    public void setup(){
-        ItemStack invSee = new ItemBuilder(Material.PAPER).setName(ChatColor.GREEN +"Voir inventaire").setLore("Click droit sur un joueur").toItemStack();
-        ItemStack vanish = new ItemBuilder(Material.BLAZE_POWDER).setName(ChatColor.YELLOW +"Vanish").setLore("Click droit pour passer en vanish").toItemStack();
-        ItemStack freeze = new ItemBuilder(Material.PACKED_ICE).setName(ChatColor.BLUE +"Freeze").setLore("Click droit sur un joueur").toItemStack();
-        ItemStack rbTp = new ItemBuilder(Material.ENDER_EYE).setName(ChatColor.DARK_GREEN +"Aller a un joueur").setLore("Click droit pour","aller a un joueur").toItemStack();
-        ItemStack kbTester = new ItemBuilder(Material.STICK).setName(ChatColor.DARK_GRAY +"KB").setLore("Click guache test les kb").addUnsafeEnchantment(Enchantment.KNOCKBACK, 5).toItemStack();
-        ItemStack playerKiller = new ItemBuilder(Material.DIAMOND_SWORD).setName(ChatColor.RED +"Killer").setLore("Click droit sur un joueur/entité","pour le tuer").toItemStack();
-        ItemStack DebugStick = new ItemBuilder(Material.DEBUG_STICK).setName(ChatColor.DARK_PURPLE + "Debugger").setLore("Execute la commande /co i").toItemStack();
-        ItemStack Reports = new ItemBuilder(Material.CHEST).setName(ChatColor.GOLD + "Reports").setLore("Execute la commande /reports").toItemStack();
+    public void setup(Player player) {
+        // Outils de modération
+        ItemStack rbTp = new ItemBuilder(Material.ENDER_EYE)
+                .setName(ChatColor.DARK_GREEN + "Aller à un joueur")
+                .setLore("Click droit pour", "aller à un joueur")
+                .toItemStack();
 
-        player.getInventory().setItem(0,invSee);
-        player.getInventory().setItem(1,vanish);
-        player.getInventory().setItem(2,freeze);
-        player.getInventory().setItem(3,rbTp);
-        player.getInventory().setItem(4,kbTester);
-        player.getInventory().setItem(5,playerKiller);
-        player.getInventory().setItem(6,DebugStick);
-        player.getInventory().setItem(7,Reports);
-        player.sendMessage(ChatColor.GREEN+"Outils de moderation activé");
+        ItemStack kbTester = new ItemBuilder(Material.STICK)
+                .setName(ChatColor.DARK_GRAY + "KB Tester")
+                .setLore("Click gauche pour tester les KB")
+                .addUnsafeEnchantment(Enchantment.KNOCKBACK, 5)
+                .toItemStack();
+
+        ItemStack debugStick = new ItemBuilder(Material.DEBUG_STICK)
+                .setName(ChatColor.DARK_PURPLE + "Debugger")
+                .setLore("Exécute la commande /co i")
+                .toItemStack();
+
+        ItemStack reports = new ItemBuilder(Material.CHEST)
+                .setName(ChatColor.GOLD + "Reports")
+                .setLore("Exécute la commande /reports")
+                .toItemStack();
+
+        ItemStack worldEdit = new ItemBuilder(Material.WOODEN_AXE)
+                .setName(ChatColor.GOLD + "Edit")
+                .setLore("FAWE axe")
+                .toItemStack();
+
+        // Nouveaux outils utiles pour les OPs
+        ItemStack vanishTool = new ItemBuilder(Material.BLAZE_ROD)
+                .setName(ChatColor.LIGHT_PURPLE + "Vanish Tool")
+                .setLore("Click droit pour activer/désactiver le vanish")
+                .toItemStack();
+
+        ItemStack freezeTool = new ItemBuilder(Material.ICE)
+                .setName(ChatColor.AQUA + "Freeze Tool")
+                .setLore("Click droit sur un joueur pour le figer")
+                .toItemStack();
+
+        ItemStack invseeTool = new ItemBuilder(Material.BOOK)
+                .setName(ChatColor.BLUE + "Voir l’inventaire")
+                .setLore("Click droit sur un joueur pour voir son inventaire")
+                .toItemStack();
+
+        // Remplissage de l'inventaire
+        player.getInventory().clear();
+        player.getInventory().setItem(0, rbTp);
+        player.getInventory().setItem(1, kbTester);
+        player.getInventory().setItem(2, debugStick);
+        player.getInventory().setItem(3, reports);
+        player.getInventory().setItem(4, worldEdit);
+        player.getInventory().setItem(5, vanishTool);
+        player.getInventory().setItem(6, freezeTool);
+        player.getInventory().setItem(7, invseeTool);
+
+        // Mode modération activé
+        player.sendMessage(ChatColor.GREEN + "Outils de modération activés !");
         player.setAllowFlight(true);
         player.setFlying(true);
         player.setGameMode(GameMode.CREATIVE);
         player.setCollidable(false);
-        player.sendTitle(ChatColor.RED + "Mode moderation",ChatColor.GREEN + "Activé");
+        player.sendTitle(ChatColor.RED + "Mode modération", ChatColor.GREEN + "Activé");
 
-
+        // Permet de casser des blocs en mode créatif
+        player.setMetadata("canBreakBlocks", new FixedMetadataValue(instance, true));
     }
+
     public void destroy(){
         instance.players.remove(player.getUniqueId());
     }

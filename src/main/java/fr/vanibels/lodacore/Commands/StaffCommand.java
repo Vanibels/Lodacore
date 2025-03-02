@@ -37,11 +37,8 @@ public class StaffCommand implements CommandExecutor {
         if (args.length == 0) {
             player.sendMessage(ChatColor.YELLOW + "/ss gui - Ouvre l'interface GUI du staff");
             player.sendMessage(ChatColor.YELLOW + "/ss mod - Met en mode modération");
-            player.sendMessage(ChatColor.YELLOW + "/ss ban <joueur> - Bannir un joueur");
-            player.sendMessage(ChatColor.YELLOW + "/ss tempban <joueur> <durée> - Tempban d'un joueur");
             player.sendMessage(ChatColor.YELLOW + "/ss kick <joueur> - Kick un joueur");
             player.sendMessage(ChatColor.YELLOW + "/ss mute <joueur> <durée> - Mute un joueur temporairement");
-            player.sendMessage(ChatColor.YELLOW + "/ss unban <joueur> - Unban un joueur");
             player.sendMessage(ChatColor.YELLOW + "/ss unmute <joueur> - Unmute un joueur");
             return true;
         }
@@ -54,12 +51,12 @@ public class StaffCommand implements CommandExecutor {
                     if (instance.modList.contains(player.getUniqueId())) {
                         PlayerManagers pm = PlayerManagers.getFromPlayer(player);
                         instance.modList.remove(player.getUniqueId());
-                        player.sendMessage(ChatColor.RED + "Mod modérateur désactivé.");
+                        player.sendMessage(ChatColor.BOLD + "" + ChatColor.RED+ "LODABAN" + ChatColor.GRAY + " Mod modérateur désactivé.");
                         player.getInventory().clear();
                         pm.giveIventory();
                         pm.destroy();
-                        player.setAllowFlight(false);
-                        player.setFlying(false);
+                        player.setAllowFlight(true);
+                        player.setFlying(true);
                     } else {
                         PlayerManagers pm = new PlayerManagers(player);
                         instance.modList.add(player.getUniqueId());
@@ -67,200 +64,12 @@ public class StaffCommand implements CommandExecutor {
                         pm.init();
                         pm.saveIventory();
                         player.getInventory().clear();
-                        pm.setup();
+                        pm.setup(player);
                     }
                 } else {
                     player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission de faire cela.");
                 }
                 break;
-
-            case "ban":
-                // Vérification des permissions
-                if (!player.hasPermission("lodaria.mod.rstaff") && !player.hasPermission("lodaria.mod.admin")) {
-                    player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission d'utiliser cette commande.");
-                    return false;
-                }
-
-                // Vérification du format de la commande
-                if (args.length < 3 || !args[0].equalsIgnoreCase("ban")) {
-                    player.sendMessage(ChatColor.RED + "Utilisation incorrecte. Format: /ss ban [User] [raison]");
-                    return false;
-                }
-
-                // Récupération du pseudo du joueur et de la raison
-                String targetName = args[1];
-                StringBuilder reasonBuilder = new StringBuilder();
-                // Construction de la raison à partir des arguments restants
-                for (int i = 2; i < args.length; i++) {
-                    reasonBuilder.append(args[i]).append(" ");
-                }
-
-                String reason = reasonBuilder.toString().trim();
-
-                // Vérification si le joueur cible est en ligne
-                Player target = Bukkit.getPlayer(targetName);
-                if (target == null) {
-                    player.sendMessage(ChatColor.RED + "Le joueur " + targetName + " n'est pas en ligne.");
-                    return false;
-                }
-                if (target.hasPermission("lodaria.mod.bypass")){
-                    player.sendMessage(ChatColor.DARK_RED + "Il semble de cette personne soit immuniser  contre ce genre de tour :)");
-                    return true;
-                }
-                // Affichage du message de bannissement
-                Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Ban permanent de " + ChatColor.WHITE + target.getName() + " pour " + ChatColor.DARK_RED + reason);
-
-                banPlayer(target,-1,reason);
-
-                break;
-
-
-            case "tempban":
-                /*
-                 * Format command
-                 * /ss tempban [User] [temps] [raison]
-                 * s -- seconde | m -- mois | a -- année | d -- jour
-                 */
-
-                // Vérification des permissions
-                if (!player.hasPermission("lodaria.mod.rstaff") &&
-                        !player.hasPermission("lodaria.mod.admin") &&
-                        !player.hasPermission("lodaria.mod.rgameplay") &&
-                        !player.hasPermission("lodaria.mod.supermod")) {
-                    player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission d'utiliser cette commande.");
-                    return false;
-                }
-
-                // Vérification du format de la commande
-                if (args.length < 4) {
-                    player.sendMessage(ChatColor.RED + "Utilisation incorrecte. Format: /ss tempban [User] [temps] [raison]");
-                    return false;
-                }
-
-                // Récupération du pseudo du joueur
-                String targetTempban = args[1];
-                String timeInput = args[2];
-                StringBuilder reasonTempBan = new StringBuilder();
-
-                // Construction de la raison à partir des arguments restants
-                for (int i = 3; i < args.length; i++) {
-                    reasonTempBan.append(args[i]).append(" ");
-                }
-
-                String reasonBan = reasonTempBan.toString().trim();
-
-                // Vérification si le joueur cible est en ligne
-                Player targetBan = Bukkit.getPlayer(targetTempban);
-                if (targetBan == null) {
-                    player.sendMessage(ChatColor.RED + "Le joueur " + targetTempban + " n'est pas en ligne.");
-                    return false;
-                }
-
-                // Conversion du temps en millisecondes
-                long durationMillis = parseDuration(timeInput);
-                if (durationMillis == -1) {
-                    player.sendMessage(ChatColor.RED + "Le format du temps est incorrect. Utilisez : s (seconde), d (jour), m (mois), a (année)");
-                    return false;
-                }
-                if (targetBan.hasPermission("lodaria.mod.bypass")){
-                    player.sendMessage(ChatColor.DARK_RED + "Il semble de cette personne soit immuniser  contre ce genre de tour :)");
-                    return true;
-                }
-
-                // Vérification des limites de bannissement en fonction des permissions
-                if (player.hasPermission("lodaria.mod.supermod") && durationMillis > (3 * 30L * 24 * 60 * 60 * 1000)) {
-                    player.sendMessage(ChatColor.RED + "Vous ne pouvez pas bannir pour plus de 3 mois.");
-                    return false;
-                }
-
-                if (player.hasPermission("lodaria.mod.rgameplay") && durationMillis > (2 * 365L * 24 * 60 * 60 * 1000)) {
-                    player.sendMessage(ChatColor.RED + "Vous ne pouvez pas bannir pour plus de 2 ans.");
-                    return false;
-                }
-
-                // Différentes permissions pour des durées spécifiques
-                if (player.hasPermission("lodaria.mod.rstaff") || player.hasPermission("lodaria.mod.admin")) {
-                    // Bannissement sans limite
-                    Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Ban temporaire de " + ChatColor.WHITE + targetBan.getName() + " pour " + ChatColor.DARK_RED + reasonBan);
-                    Bukkit.getPlayer(targetBan.getUniqueId()).kickPlayer(reasonBan);
-                    banPlayer(targetBan,durationMillis, reasonBan);
-                } else if (player.hasPermission("lodaria.mod.rgameplay")) {
-                    // Ban maximum de 2 ans
-                    Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Ban temporaire de " + ChatColor.WHITE + targetBan.getName() + " pour " + ChatColor.DARK_RED + reasonBan + " pour une durée maximale de 2 ans.");
-                    Bukkit.getPlayer(targetBan.getUniqueId()).kickPlayer(reasonBan);
-                    banPlayer(targetBan,durationMillis, reasonBan);
-                } else if (player.hasPermission("lodaria.mod.supermod")) {
-                    // Ban maximum de 3 mois
-                    Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Ban temporaire de " + ChatColor.WHITE + targetBan.getName() + " pour " + ChatColor.DARK_RED + reasonBan + " pour une durée maximale de 3 mois.");
-                    Bukkit.getPlayer(targetBan.getUniqueId()).kickPlayer(reasonBan);
-                    banPlayer(targetBan,durationMillis, reasonBan);
-                }
-
-                break;
-
-             case "unban":
-                /*
-                 * Format command
-                 * /ss unban [User]
-                 */
-
-                // Vérification des permissions
-                if (!player.hasPermission("lodaria.mod.rstaff") &&
-                        !player.hasPermission("lodaria.mod.admin") &&
-                        !player.hasPermission("lodaria.mod.rgameplay") &&
-                        !player.hasPermission("lodaria.mod.supermod")) {
-                    player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission d'utiliser cette commande.");
-                    return false;
-                }
-
-                // Vérification du format de la commande
-                if (args.length < 2) {
-                    player.sendMessage(ChatColor.RED + "Utilisation incorrecte. Format: /ss unban [User]");
-                    return false;
-                }
-
-                // Récupération du pseudo du joueur
-                String targetUnBan = args[1];
-
-                // Récupération de l'objet Player si le joueur est en ligne
-                Player targetPlayer = Bukkit.getPlayer(targetUnBan);
-
-                // Si le joueur est hors ligne, récupérer l'objet OfflinePlayer
-                if (targetPlayer == null) {
-                    targetPlayer = (Player) Bukkit.getOfflinePlayer(targetPlayer.getUniqueId());
-
-                }
-
-                // Vérification si le joueur est banni
-                BanList<Player> banList = Bukkit.getBanList(BanList.Type.PROFILE);
-                BanEntry<Player> banEntry = banList.getBanEntry(targetPlayer);
-                if (banEntry == null) {
-                    player.sendMessage(ChatColor.RED + "Le joueur " + targetUnBan + " n'est pas banni.");
-                    return false;
-                }
-
-                // Vérification des permissions et des durées de ban
-                long banDuration = System.currentTimeMillis() - banEntry.getCreated().getTime();
-
-                if (player.hasPermission("lodaria.mod.supermod") && banDuration > (3 * 30L * 24 * 60 * 60 * 1000)) {
-                    player.sendMessage(ChatColor.RED + "Vous ne pouvez pas débannir un joueur banni depuis plus de 3 mois.");
-                    return false;
-                }
-
-                if (player.hasPermission("lodaria.mod.rgameplay") && banDuration > (2 * 365L * 24 * 60 * 60 * 1000)) {
-                    player.sendMessage(ChatColor.RED + "Vous ne pouvez pas débannir un joueur banni depuis plus de 2 ans.");
-                    return false;
-                }
-
-                // Unban
-                banList.pardon(targetPlayer);
-                Bukkit.broadcastMessage(instance.prefix + ChatColor.GOLD + "Unban de " + ChatColor.WHITE + targetUnBan);
-
-                break;
-
-
-
-
             case "kick":
                 /*
                  * Format command

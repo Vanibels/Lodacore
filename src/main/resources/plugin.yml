@@ -1,6 +1,7 @@
 name: Lodacore
 version: '1.7'
 main: fr.vanibels.lodacore.Lodacore
+load: STARTUP
 api-version: '1.20'
 author: Vanibels
 description: plugin principal du serveur Lodaria.
@@ -11,9 +12,19 @@ commands:
   #    - f
   #    - r
   #    - v
-  ecloud:
-    permission: lodaria.cloud
-    description: obtenir des information/mofifié le prifil d'un joueur en base de donné
+  vanish:
+    permission: lodaria.mod.vanish.set
+    description: Set vanish
+    aliases:
+      - v
+  svanish:
+    permission: lodaria.mod.vanish.set.super
+    description: Set super vanish
+    aliases:
+      - sv
+      - supervanish
+  join:
+    description: Reloindre le serveur
   lkit:
     description: Access kit grade.
     permission: lodaria.tools.manag
@@ -40,58 +51,50 @@ commands:
   spawn:
     description: Tp to the spawn
     usage: /spawn
-  mine:
-    description: Tp to the minage world
-    aliases:
-      - mine
-      - minage
-    usage: /mine
   rstaff:
     description: go to staff reunion
     usage: /rstaff
     permission: lodaria.supermod
-  s:
-    description: tp to the shop
-    aliases:
-      - boutique
-    usage: /s
-  arene:
-    usage: /arene /warzone
-    aliases:
-      - warzone
-      - Warzone
-      - Arene
-      - wz
-      - ar
-    description: tp to the aréne
   discord:
     usage: /discord
     description: get discord of Ascaria oneblock
-  vote:
-    usage: /vote
-    description: get lens for vote
-  boutique:
-    usage: /boutique
-    description: get boutique lens
-  menu:
-    usage: /menu
-    description: open the server menu
-  chat:
-    usage: /chat args
-    description: manage the chat
-    permission: lodaria.chatmanagers
   site:
     usage: /site
     description: go to the site
-  event:
-    description: Permet d'activer ou de desactiver une session d'event
-    usage: /event on/off/annonce
   bienvenue:
     description: donner les premiére instruction au nouveau joueur
     aliases:
       - bvn
     usage: /bvn {player}
+  jour:
+    description: Met le jour
+    permission: lodaria.mod.supermod
+  nuit:
+    description: Met la nuit
+    permission: lodaria.mod.supermod
+  sun:
+    description: Met la pluie sur off
+    permission: lodaria.mod.supermod
+  rain:
+    description: Met la pluie sur on
+    permission: lodaria.mod.supermod
+  speedon:
+    description: Met la vittesse sur 3
+    permission: lodaria.mod.supermod
+  speedoff:
+    description: Met la vittesse sur 1
+    permission: lodaria.mod.supermod
+
 permissions:
+  lodaria.mod.vanish.view:
+    description: View vanised user
+    default: op
+  lodaria.mod.vanish.set:
+    description: Set vanish
+    default: op
+  lodaria.mod.vanish.set.super:
+    description: Set super vanish
+    default: op
   lodaria.user.teleport.bypass:
     description: Bypass le cooldown et le delai avnt la teleportation
     default: op

@@ -1,6 +1,7 @@
-package fr.vanibels.lodacore.Utils;
+package fr.vanibels.lodacore.Managers.Utils;
 
 public enum ServerState {
     MAINTENANCE,
+    WAITING,
     OPEN;
 }

@@ -88,7 +88,24 @@ public class KitExecutor implements CommandExecutor {
                 KM.DieuKit(player);
                 player.sendMessage(ChatColor.YELLOW + "Obtention du/des kits");
                 break;
+            case "coins","lodacoins":
+                KM.lodacoins(player);
+                player.sendMessage(ChatColor.YELLOW + "Obtention du/des kits");
+                break;
+            case "raida","raidA":
+                KM.RaidAttaqueKit(player);
+                player.sendMessage(ChatColor.YELLOW + "Obtention du/des kits");
+                break;
+            case "raidd", "raidD":
+                KM.RaidDefenseKit(player);
+                player.sendMessage(ChatColor.YELLOW + "Obtention du/des kits");
+                break;
+            case "raidw","raidW":
+                KM.RaidWeaponKit(player);
+                player.sendMessage(ChatColor.YELLOW + "Obtention du/des kits");
+                break;
             case "all":
+                KM.lodacoins(player);
                 KM.RoturierKit(player);
                 KM.BaronKit(player);
                 KM.VicomteKit(player);
@@ -103,6 +120,9 @@ public class KitExecutor implements CommandExecutor {
                 KM.ChevalierKit(player);
                 KM.SeigneurKit(player);
                 KM.DieuKit(player);
+                KM.RaidWeaponKit(player);
+                KM.RaidAttaqueKit(player);
+                KM.RaidDefenseKit(player);
                 player.sendMessage(ChatColor.YELLOW + "Obtention du/des kits");
                 break;
             default:

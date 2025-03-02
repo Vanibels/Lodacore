@@ -1,5 +1,6 @@
 package fr.vanibels.lodacore.KitManager.command;
 
+import fr.vanibels.lodacore.Managers.Utils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -144,6 +145,41 @@ public class KitManagers {
         ItemStack item = new ItemStack(Material.NETHER_STAR);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(ChatColor.YELLOW + "Giver LV4 --- DIEU");
+        itemMeta.setLore(Arrays.asList(ChatColor.YELLOW +  "Click Droit",ChatColor.YELLOW + "Pour obtenir les items",ChatColor.YELLOW +"◈ Item Event ◈"));
+        itemMeta.addEnchant(Enchantment.LUCK, 4, true);
+        item.setItemMeta(itemMeta);
+        player.getInventory().addItem(item);
+    }
+    public void lodacoins(Player player){
+        ItemBuilder lodacoins = new ItemBuilder(Material.RAW_GOLD);
+        lodacoins.setName(ChatColor.GOLD + "Lodacoins").setLore(ChatColor.YELLOW + "Pour les échanges et achat de kit/utilitaire",ChatColor.YELLOW +"◈ Item Event ◈").addUnsafeEnchantment(Enchantment.LUCK,1);
+        player.getInventory().addItem(lodacoins.toItemStack());
+    }
+    public void RaidAttaqueKit(Player player){
+        // Ascatools.A0000.giveStart(player);
+        ItemStack item = new ItemStack(Material.NETHER_STAR);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.YELLOW + "Kit Attaquant");
+        itemMeta.setLore(Arrays.asList(ChatColor.YELLOW +  "Click Droit",ChatColor.YELLOW + "Pour obtenir les items",ChatColor.YELLOW +"◈ Item Event ◈"));
+        itemMeta.addEnchant(Enchantment.LUCK, 4, true);
+        item.setItemMeta(itemMeta);
+        player.getInventory().addItem(item);
+    }
+    public void RaidDefenseKit(Player player){
+        // Ascatools.A0000.giveStart(player);
+        ItemStack item = new ItemStack(Material.NETHER_STAR);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.YELLOW + "Kit Defenseur");
+        itemMeta.setLore(Arrays.asList(ChatColor.YELLOW +  "Click Droit",ChatColor.YELLOW + "Pour obtenir les items",ChatColor.YELLOW +"◈ Item Event ◈"));
+        itemMeta.addEnchant(Enchantment.LUCK, 4, true);
+        item.setItemMeta(itemMeta);
+        player.getInventory().addItem(item);
+    }
+    public void RaidWeaponKit(Player player){
+        // Ascatools.A0000.giveStart(player);
+        ItemStack item = new ItemStack(Material.NETHER_STAR);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.YELLOW + "Arme event raid");
         itemMeta.setLore(Arrays.asList(ChatColor.YELLOW +  "Click Droit",ChatColor.YELLOW + "Pour obtenir les items",ChatColor.YELLOW +"◈ Item Event ◈"));
         itemMeta.addEnchant(Enchantment.LUCK, 4, true);
         item.setItemMeta(itemMeta);

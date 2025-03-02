@@ -20,7 +20,7 @@ ModChatListener implements Listener {
         if (!message.startsWith("$")) return;
         event.setCancelled(true);
 
-        String ModMessage = ChatColor.DARK_GRAY+ "["+ ChatColor.DARK_RED+"STAFF CHAT"+ ChatColor.DARK_GRAY+"] " +ChatColor.GOLD+ player.getDisplayName() + "-" + ChatColor.WHITE + message.replace('$',' ');
+        String ModMessage = ChatColor.DARK_GRAY+ "["+ ChatColor.DARK_RED+"SUPER STAFF CHAT"+ ChatColor.DARK_GRAY+"] " +ChatColor.GOLD+ player.getDisplayName() + "-" + ChatColor.WHITE + message.replace('$',' ');
 
         // Parcours tous les joueurs en ligne
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {

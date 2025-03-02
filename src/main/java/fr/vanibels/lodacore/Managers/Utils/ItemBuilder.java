@@ -1,4 +1,4 @@
-package fr.vanibels.lodacore.Utils;
+package fr.vanibels.lodacore.Managers.Utils;
 
 import org.bukkit.Color;
 import org.bukkit.Material;

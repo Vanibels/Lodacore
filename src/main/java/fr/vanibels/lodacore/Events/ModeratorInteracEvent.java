@@ -1,19 +1,14 @@
 package fr.vanibels.lodacore.Events;
 
 
-import fr.vanibels.lodacore.Commands.StaffCommand;
-import fr.vanibels.lodacore.Managers.PlayerManagers;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
@@ -23,122 +18,109 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static fr.vanibels.lodacore.Lodacore.MutedPlayers;
 import static fr.vanibels.lodacore.Lodacore.instance;
 
 public class ModeratorInteracEvent implements Listener {
-
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
+    public void ModInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        // Si le joueur est gelé, on bloque son mouvement
-        if (PlayerManagers.isFreezed(player)) {
-            event.setCancelled(true);
-            MutedPlayers.add(event.getPlayer().toString());
-        }
-    }
-    @EventHandler
-    public void ModInterac(PlayerInteractEntityEvent e){
-        Player player = e.getPlayer();
-        if (!PlayerManagers.isModerator(player)) return;
-        if (!(e.getRightClicked() instanceof Player)) return;
-        Player target = (Player) e.getRightClicked();
-        e.setCancelled(true);
+        ItemStack item = event.getItem();
 
-        switch (player.getInventory().getItemInMainHand().getType()){
+        if (item == null || item.getType() == Material.AIR) return;
+        if (!instance.modList.contains(player.getUniqueId())) return;
 
-            case PAPER:
-                Inventory inv = Bukkit.createInventory(null,5 *9, ChatColor.BLUE + "Inventaire " + target.getName());
-
-                for (int i =0; i<36;i++){
-                    if (target.getInventory().getItem(i) != null){
-                        inv.setItem(i,target.getInventory().getItem(i));
-                    }
-                }
-                inv.setItem(36, target.getInventory().getHelmet());
-                inv.setItem(37, target.getInventory().getChestplate());
-                inv.setItem(38, target.getInventory().getLeggings());
-                inv.setItem(39, target.getInventory().getBoots());
-
-                player.openInventory(inv);
-
-                break;
-            case  DIAMOND_SWORD:
-                if (!(e.getRightClicked() instanceof LivingEntity)) return;
-                LivingEntity entity = (LivingEntity) e.getRightClicked();
-                entity.setHealth(0);
-                break;
-            case PACKED_ICE:
-                if (!PlayerManagers.isFreezed(target)){
-                    instance.freezList.add(target.getUniqueId());
-                    target.sendMessage(ChatColor.RED + "Vous avez été gelé !");
-                    target.sendMessage(ChatColor.RED + "Passez sur TeamSpeak : ts.lodaria.net ou sur le Discord : /discord !");
-                    target.sendTitle(ChatColor.RED + "Vous avez été gelé !", ChatColor.YELLOW + "Passez sur TeamSpeak : ts.lodaria.net ou Discord : /discord !");
-                    return;
-                }
-                if (PlayerManagers.isFreezed(target)) {
-                    // Si le joueur est déjà gelé, on le dégèle
-                    instance.freezList.remove(target.getUniqueId());
-                    MutedPlayers.remove(target.getUniqueId().toString());
-                    target.sendMessage(ChatColor.GREEN + "Vous avez été dégelé.");
-                    return;
-                }
-                // Si le joueur n'est pas gelé, on l'ajoute à la liste des joueurs gelés
-                 break;
-
-
-
-            default: break;
-        }
-    }
-    @EventHandler
-    public void ModInteract(PlayerInteractEvent e){
-        Player player = e.getPlayer();
-        if (!PlayerManagers.isModerator(player)) return;
-        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        switch (player.getInventory().getItemInMainHand().getType()){
+        switch (item.getType()) {
             case ENDER_EYE:
                 List<Player> list = new ArrayList<>(Bukkit.getOnlinePlayers());
                 list.remove(player);
-                if (list.size() == 0){
-                    player.sendMessage("Aucun autre joueur connecte");
+                if (list.isEmpty()) {
+                    player.sendMessage(ChatColor.RED + "Aucun autre joueur connecté.");
                     return;
                 }
                 Player target = list.get(new Random().nextInt(list.size()));
                 player.teleport(target.getLocation());
-                player.sendMessage("Teleportation a " + target.getName());
-
-
+                player.sendMessage(ChatColor.GREEN + "Téléportation à " + ChatColor.AQUA + target.getName());
                 break;
-            case BLAZE_POWDER:
-                if (PlayerManagers.isVanished(player)) {
-                    // Si le joueur est déjà en vanish, on le rend visible pour tous les autres joueurs
-                    for (Player players : Bukkit.getOnlinePlayers()) {
-                        players.showPlayer(instance, player);
-                    }
-                    // Change l'état du vanish à false
-                    PlayerManagers.setVanished(player, false);
-                    player.sendMessage(ChatColor.GREEN + "Vous êtes maintenant visible.");
-                    return;
-                }
-                // Si le joueur n'est pas en vanish, on le rend invisible pour tous les autres joueurs
-                for (Player players : Bukkit.getOnlinePlayers()) {
-                    players.hidePlayer(instance, player);
-                }
-                // Change l'état du vanish à true
-                PlayerManagers.setVanished(player, true);
-                player.sendMessage(ChatColor.RED + "Vous êtes maintenant en vanish.");
-                break;
+
             case CHEST:
                 player.performCommand("reports");
                 break;
+
             case DEBUG_STICK:
                 player.performCommand("co i");
                 break;
-            default: break;
-        }
 
+            case BLAZE_ROD: // Vanish Tool
+                if (instance.vanishPlayers.contains(player.getUniqueId())) {
+                    instance.vanishPlayers.remove(player.getUniqueId());
+                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        onlinePlayer.showPlayer(instance, player);
+                    }
+                    player.sendMessage(ChatColor.YELLOW + "Vanish désactivé !");
+                } else {
+                    instance.vanishPlayers.add(player.getUniqueId());
+                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        if (!onlinePlayer.hasPermission("lodaria.moderation")) {
+                            onlinePlayer.hidePlayer(instance, player);
+                        }
+                    }
+                    player.sendMessage(ChatColor.GREEN + "Vanish activé !");
+                }
+                break;
+
+            case ICE: // Freeze Tool
+                Player targetFreeze = getTargetPlayer(player);
+                if (targetFreeze != null) {
+                    if (instance.frozenPlayers.contains(targetFreeze.getUniqueId())) {
+                        instance.frozenPlayers.remove(targetFreeze.getUniqueId());
+                        targetFreeze.sendMessage(ChatColor.RED + "Vous êtes dégelé !");
+                        player.sendMessage(ChatColor.GREEN + targetFreeze.getName() + " est dégelé !");
+                    } else {
+                        instance.frozenPlayers.add(targetFreeze.getUniqueId());
+                        targetFreeze.sendMessage(ChatColor.RED + "Vous êtes gelé !");
+                        player.sendMessage(ChatColor.GREEN + targetFreeze.getName() + " est gelé !");
+                    }
+                } else {
+                    player.sendMessage(ChatColor.RED + "Aucun joueur visé.");
+                }
+                break;
+
+            case BOOK: // Voir l'inventaire (Invsee)
+                Player targetInvsee = getTargetPlayer(player);
+                if (targetInvsee != null) {
+                    player.openInventory(targetInvsee.getInventory());
+                    player.sendMessage(ChatColor.GREEN + "Ouverture de l'inventaire de " + targetInvsee.getName());
+                } else {
+                    player.sendMessage(ChatColor.RED + "Aucun joueur visé.");
+                }
+                break;
+
+            default:
+                break;
+        }
     }
+
+    // Fonction pour récupérer le joueur ciblé
+    private Player getTargetPlayer(Player player) {
+        List<Entity> nearbyEntities = player.getNearbyEntities(5, 5, 5);
+        for (Entity entity : nearbyEntities) {
+            if (entity instanceof Player) {
+                return (Player) entity;
+            }
+        }
+        return null;
+    }
+
+    // Gestion du freeze dans un autre event pour empêcher les déplacements
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if (instance.frozenPlayers.contains(player.getUniqueId())) {
+            event.setTo(event.getFrom()); // Annule le mouvement
+            player.sendMessage(ChatColor.RED + "Vous êtes gelé !");
+        }
+    }
+
 
     @EventHandler
     public void CoreInteractorEditorEvenet(InventoryInteractEvent e){
@@ -150,9 +132,11 @@ public class ModeratorInteracEvent implements Listener {
 
         switch (it.getType()){
             case ENCHANTED_BOOK:
+                inv.clear();
                 e.setCancelled(true);
                 break;
             case BARRIER:
+                //it.getItemMeta();
                 e.setCancelled(true);
                 break;
             case NAME_TAG:
