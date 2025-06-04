@@ -23,9 +23,8 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class KitListener implements Listener {
-
-
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
